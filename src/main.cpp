@@ -7,29 +7,28 @@
 //
 
 #include "png++/png.hpp"
-#include "yaml-cpp/yaml.h"
 #include "opts.h"
 
-#include "sphere.h"
+#include "scene.h"
+#include "renderer.h"
 
 int main(int argc, const char* argv[]) {
 
-  png::image<png::rgb_pixel> img(128, 128);
-  img.write("test.png");
+  std::string scene_desc;
+  unsigned long resx, resy;
+  std::string output_img;
+  unsigned long trace_depth;
 
-  std::string sceneDesc;
-  unsigned long resX, resY;
-  std::string outputImg;
-  unsigned long traceDepth;
-
-  if (!opts::get(argc, argv, &sceneDesc, &resX, &resY, &outputImg,
-                 &traceDepth)) {
+  if (!opts::get(argc, argv, &scene_desc, &resx, &resy, &output_img,
+                 &trace_depth)) {
     return 1;
   }
 
-  YAML::Node sceneConfig = YAML::LoadFile(sceneDesc);
+  scene s;
+  scene::create(scene_desc, &s);
 
-  Sphere s;
+  renderer r;
+  r.run(s, resx, resy).write(output_img);
 
   return 0;
 }
