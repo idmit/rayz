@@ -11,6 +11,12 @@
 
 #include "glm/glm.hpp"
 
-typedef glm::tvec3<float> fvec3;
+using fvec3 = glm::fvec3;
+using fmat4 = glm::fmat4;
+
+struct ray {
+  fvec3 origin;
+  fvec3 dir;
+};
 
 #endif /* defined(__rayz__types__) */

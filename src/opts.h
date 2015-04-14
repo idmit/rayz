@@ -34,9 +34,9 @@ const option::Descriptor usage[] = {
 
 };
 
-bool get(int argc, const char* argv[], std::string* sceneDesc,
-         unsigned long* resX, unsigned long* resY, std::string* outputImg,
-         unsigned long* traceDepth) {
+bool get(int argc, const char* argv[], std::string* scene_desc,
+         unsigned long* resx, unsigned long* resy, std::string* output_img,
+         unsigned long* trace_depth) {
   argc -= (argc > 0);
   argv += (argc > 0);
   option::Stats stats(opts::usage, argc, argv);
@@ -67,11 +67,11 @@ bool get(int argc, const char* argv[], std::string* sceneDesc,
     return false;
   }
 
-  *sceneDesc = options[opts::SCENE].arg;
-  *resX = std::stoul(options[opts::RESX].arg);
-  *resY = std::stoul(options[opts::RESY].arg);
-  *outputImg = options[opts::OUTPUT].arg;
-  *traceDepth = std::stoul(options[opts::DEPTH].arg);
+  *scene_desc = options[opts::SCENE].arg;
+  *resx = std::stoul(options[opts::RESX].arg);
+  *resy = std::stoul(options[opts::RESY].arg);
+  *output_img = options[opts::OUTPUT].arg;
+  *trace_depth = std::stoul(options[opts::DEPTH].arg);
 
   delete[] options;
   delete[] buffer;
