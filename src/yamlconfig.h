@@ -14,6 +14,8 @@
 
 #include "yaml-cpp/yaml.h"
 
+#include "camera.h"
+
 #include "triangle.h"
 #include "cylinder.h"
 #include "torus.h"
@@ -24,5 +26,7 @@ std::unique_ptr<triangle> parse_triangle(YAML::Node node_config);
 std::unique_ptr<cylinder> parse_cylinder(YAML::Node cylinder_config);
 std::unique_ptr<torus> parse_torus(YAML::Node torus_config);
 std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config);
+
+std::unique_ptr<camera> parse_camera(YAML::Node camera_config);
 
 #endif /* defined(__rayz__yamlconfig__) */

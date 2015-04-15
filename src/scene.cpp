@@ -6,13 +6,12 @@
 //  Copyright (c) 2015 Ivan Dmitrievsky. All rights reserved.
 //
 
-#include <memory>
 #include "yaml-cpp/yaml.h"
 
 #include "scene.h"
 #include "yamlconfig.h"
 
-bool scene::create(std::string scene_desc, scene* scene) {
+std::unique_ptr<camera> scene::create(std::string scene_desc, scene* scene) {
   YAML::Node scene_config = YAML::LoadFile(scene_desc);
 
   for (unsigned long i = 1; i < scene_config.size() && scene_config[i]["node"];
@@ -20,7 +19,7 @@ bool scene::create(std::string scene_desc, scene* scene) {
     scene->_nodes.emplace_back(std::move(parse_node(scene_config[i]["node"])));
   }
 
-  return true;
+  return parse_camera(scene_config[0]["camera"]);
 }
 
 std::vector<const node*> scene::nodes() const {

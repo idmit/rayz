@@ -47,7 +47,7 @@ std::unique_ptr<node> parse_node(YAML::Node node_config) {
 
 std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
   std::unique_ptr<triangle> parsed_node = nullptr;
-  std::array<fvec3, 3> args;
+  std::array<dvec3, 3> args;
   std::array<std::string, 3> keys({ "p0", "p1", "p2" });
 
   for (unsigned long i = 0; i < args.size(); ++i) {
@@ -55,9 +55,9 @@ std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
     if (!point_config) {
       return nullptr;
     } else {
-      args[i].x = point_config["x"].as<float>();
-      args[i].y = point_config["y"].as<float>();
-      args[i].z = point_config["z"].as<float>();
+      args[i].x = point_config["x"].as<double>();
+      args[i].y = point_config["y"].as<double>();
+      args[i].z = point_config["z"].as<double>();
     }
   }
 
@@ -69,8 +69,8 @@ std::unique_ptr<cylinder> parse_cylinder(YAML::Node cylinder_config) {
     return nullptr;
   }
 
-  return make_unique<cylinder>(cylinder_config["radius"].as<float>(),
-                               cylinder_config["height"].as<float>());
+  return make_unique<cylinder>(cylinder_config["radius"].as<double>(),
+                               cylinder_config["height"].as<double>());
 }
 
 std::unique_ptr<torus> parse_torus(YAML::Node torus_config) {
@@ -78,8 +78,8 @@ std::unique_ptr<torus> parse_torus(YAML::Node torus_config) {
     return nullptr;
   }
 
-  return make_unique<torus>(torus_config["radius"].as<float>(),
-                            torus_config["tube_radius"].as<float>());
+  return make_unique<torus>(torus_config["radius"].as<double>(),
+                            torus_config["tube_radius"].as<double>());
 }
 
 std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
@@ -87,6 +87,49 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
     return nullptr;
   }
 
-  return make_unique<sphere>(fvec3{ 1, 1, 1 },
-                             sphere_config["radius"].as<float>());
+  return make_unique<sphere>(dvec3{ 0, 50, 0 },
+                             sphere_config["radius"].as<double>());
+}
+
+std::unique_ptr<camera> parse_camera(YAML::Node camera_config) {
+  dvec3 pos, orient;
+  double fovx = 0, fovy = 0;
+
+  if (!camera_config) {
+    return nullptr;
+  }
+
+  auto position_config = camera_config["position"];
+  if (!position_config) {
+    return nullptr;
+  } else {
+    pos.x = position_config["x"].as<double>();
+    pos.y = position_config["y"].as<double>();
+    pos.z = position_config["z"].as<double>();
+  }
+
+  auto orient_config = camera_config["orientation"];
+  if (!orient_config) {
+    return nullptr;
+  } else {
+    orient.x = orient_config["h"].as<double>();
+    orient.y = orient_config["p"].as<double>();
+    orient.z = orient_config["r"].as<double>();
+  }
+
+  auto fx_config = camera_config["fov_x"];
+  if (!fx_config) {
+    return nullptr;
+  } else {
+    fovx = fx_config.as<double>();
+  }
+
+  auto fy_config = camera_config["fov_y"];
+  if (!fy_config) {
+    return nullptr;
+  } else {
+    fovy = fy_config.as<double>();
+  }
+
+  return make_unique<camera>(pos, fovx, fovy, orient.x, orient.y, orient.z);
 }

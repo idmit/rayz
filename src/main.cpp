@@ -10,7 +10,7 @@
 #include "opts.h"
 
 #include "scene.h"
-#include "renderer.h"
+#include "camera.h"
 
 int main(int argc, const char* argv[]) {
 
@@ -25,10 +25,9 @@ int main(int argc, const char* argv[]) {
   }
 
   scene s;
-  scene::create(scene_desc, &s);
+  auto cam(scene::create(scene_desc, &s));
 
-  renderer r;
-  r.run(s, resx, resy).write(output_img);
+  cam->render(s, resx, resy).write(output_img);
 
   return 0;
 }

@@ -12,10 +12,13 @@
 #include <memory>
 #include <vector>
 #include "node.h"
+#include "camera.h"
+
+class camera;
 
 class scene {
 public:
-  static bool create(std::string scene_desc, scene* scene);
+  static std::unique_ptr<camera> create(std::string scene_desc, scene* scene);
   std::vector<const node*> nodes() const;
 
 private:
