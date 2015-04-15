@@ -27,6 +27,10 @@ int main(int argc, const char* argv[]) {
   scene s;
   auto cam(scene::create(scene_desc, &s));
 
+  if (!cam) {
+    return 1;
+  }
+
   cam->render(s, resx, resy).write(output_img);
 
   return 0;

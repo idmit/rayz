@@ -29,8 +29,8 @@ camera::camera(dvec3 pos, double fovx, double fovy, double heading,
   _w = glm::rotate(_w, -glm::radians(heading), _v);
   _u = glm::rotate(_u, -glm::radians(heading), _v);
 
-  _w = glm::rotate(_w, -glm::radians(pitch), _u);
-  _v = glm::rotate(_v, -glm::radians(pitch), _u);
+  _w = glm::rotate(_w, glm::radians(pitch), _u);
+  _v = glm::rotate(_v, glm::radians(pitch), _u);
 
   _u = glm::rotate(_u, -glm::radians(roll), _w); //
   _v = glm::rotate(_v, -glm::radians(roll), _w); //
@@ -38,11 +38,11 @@ camera::camera(dvec3 pos, double fovx, double fovy, double heading,
   _lookat = _eye - _w * dist;
 }
 
-png::image<png::rgb_pixel> camera::render(const scene& scene,
-                                          unsigned long resX,
-                                          unsigned long resY) {
-  png::image<png::rgb_pixel> img(resX, resY);
-  std::vector<std::vector<double> > pxs(resY, std::vector<double>(resX, 0));
+png::image<png::rgba_pixel_16> camera::render(const scene& scene,
+                                              unsigned long resX,
+                                              unsigned long resY) {
+  png::image<png::rgba_pixel_16> img(resX, resY);
+  std::vector<std::vector<double> > pxs(resY, std::vector<double>(resX, -1));
 
   double pxw = 2 * _dist * glm::tan(glm::radians(_fovx / 2)) / resX;
   double pxh = 2 * _dist * glm::tan(glm::radians(_fovy / 2)) / resY;
@@ -52,7 +52,7 @@ png::image<png::rgb_pixel> camera::render(const scene& scene,
   double x = -(resX * pxw / 2);
   double y = -(resY * pxh / 2);
 
-  for (long i = 0; i < resY; ++i) {
+  for (long i = resY - 1; i >= 0; --i) {
     for (long j = 0; j < resX; ++j) {
       for (auto& node : scene.nodes()) {
         ray ray;
@@ -60,8 +60,12 @@ png::image<png::rgb_pixel> camera::render(const scene& scene,
         ray.dir = glm::normalize(x * _u + y * _v - _dist * _w);
         dvec3 ip;
         if (node->intersect(ray, &ip)) {
-          max_intensity = glm::max(max_intensity, glm::distance(_eye, ip));
-          pxs[i][j] = glm::distance(_eye, ip);
+          double dist = glm::distance(_eye, ip);
+          max_intensity = glm::max(max_intensity, dist);
+          if (pxs[i][j] < 0) {
+            pxs[i][j] = INFINITY;
+          }
+          pxs[i][j] = glm::min(pxs[i][j], dist);
         }
       }
       x += pxw;
@@ -72,9 +76,13 @@ png::image<png::rgb_pixel> camera::render(const scene& scene,
 
   for (long i = 0; i < resY; ++i) {
     for (long j = 0; j < resX; ++j) {
-      double intensity = pxs[i][j] / max_intensity;
-      unsigned char in = intensity * 255;
-      img.set_pixel(j, i, { in, in, in });
+      if (pxs[i][j] >= 0) {
+        double intensity = pxs[i][j] / (2 * max_intensity);
+        uint16_t val = 0xFFFF - intensity * 0xFFFF;
+        img.set_pixel(j, i, { val, val, val, 0xFFFF });
+      } else {
+        img.set_pixel(j, i, { 0, 0, 0, 0 });
+      }
     }
   }
 
