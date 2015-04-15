@@ -11,22 +11,27 @@
 sphere::sphere(fvec3 pos, float rad) : _pos(pos), _rad(rad) {}
 
 bool sphere::intersect(ray ray, fvec3 *intersection_point) const {
-  fvec3 dist = _pos - ray.origin;
-  float B = glm::dot(ray.dir, dist);
-  double D = B * B - glm::dot(dist, dist) + _rad * _rad;
+  dvec3 dist = -_pos + ray.origin;
+  double b = glm::dot(dist, ray.dir);
+  double c = glm::dot(dist, dist) - _rad * _rad;
 
-  if (D < 0.0f) {
+  double d = b * b - c;
+
+  if (d < 0) {
     return false;
   }
-  float t0 = B - glm::sqrt(D);
-  float t1 = B + glm::sqrt(D);
 
-  if ((t0 > 0.1f)) { // && (t0 < t)) {
-    *intersection_point = ray.origin + ray.dir * t0;
+  double e = glm::sqrt(d);
+
+  double t = (-b - e);
+  if (t > 0) {
+    *intersection_point = ray.origin + ray.dir * t;
     return true;
   }
-  if ((t1 > 0.1f)) {
-    *intersection_point = ray.origin + ray.dir * t1;
+
+  t = (-b + e);
+  if (t > 0) {
+    *intersection_point = ray.origin + ray.dir * t;
     return true;
   }
 
