@@ -18,12 +18,12 @@ public:
   node(std::unique_ptr<geometry> &&geom);
   void add_child(std::unique_ptr<node> &&child);
 
-  bool intersect(ray ray, fvec3 *intersection_point) const;
-  float get_color(fvec3 point) const;
-  fvec3 get_normal(fvec3 point) const;
+  bool intersect(ray ray, dvec3 *intersection_point) const;
+  double get_color(dvec3 point) const;
+  dvec3 get_normal(dvec3 point) const;
 
 private:
-  fmat4 _lcs;
+  dmat4 _lcs;
   std::unique_ptr<geometry> _geom;
   std::vector<std::unique_ptr<node> > _children;
 };

@@ -8,12 +8,12 @@
 
 #include "cylinder.h"
 
-cylinder::cylinder(float rad, float height) : _rad(rad), _height(height){};
+cylinder::cylinder(double rad, double height) : _rad(rad), _height(height){};
 
-bool cylinder::intersect(ray ray, fvec3 *intersectionPoint) const {
+bool cylinder::intersect(ray ray, dvec3 *intersectionPoint) const {
   return false;
 }
 
-float cylinder::get_color(fvec3 intersectionPoint) const { return 0; }
+double cylinder::get_color(dvec3 intersectionPoint) const { return 0; }
 
-fvec3 cylinder::get_normal(fvec3 point) const { return { 0, 0, 0 }; }
+dvec3 cylinder::get_normal(dvec3 point) const { return { 0, 0, 0 }; }

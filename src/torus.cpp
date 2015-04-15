@@ -8,10 +8,10 @@
 
 #include "torus.h"
 
-torus::torus(float rad, float tube_rad) : _rad(rad), _tube_rad(tube_rad){};
+torus::torus(double rad, double tube_rad) : _rad(rad), _tube_rad(tube_rad){};
 
-bool torus::intersect(ray ray, fvec3 *intersectionPoint) const { return false; }
+bool torus::intersect(ray ray, dvec3 *intersectionPoint) const { return false; }
 
-float torus::get_color(fvec3 intersectionPoint) const { return 0; }
+double torus::get_color(dvec3 intersectionPoint) const { return 0; }
 
-fvec3 torus::get_normal(fvec3 point) const { return { 0, 0, 0 }; }
+dvec3 torus::get_normal(dvec3 point) const { return { 0, 0, 0 }; }

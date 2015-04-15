@@ -13,14 +13,14 @@
 
 class sphere : public geometry {
 public:
-  sphere(fvec3 pos, float rad);
-  virtual bool intersect(ray ray, fvec3 *intersection_point) const override;
-  virtual float get_color(fvec3 point) const override;
-  virtual fvec3 get_normal(fvec3 point) const override;
+  sphere(dvec3 pos, double rad);
+  virtual bool intersect(ray ray, dvec3 *intersection_point) const override;
+  virtual double get_color(dvec3 point) const override;
+  virtual dvec3 get_normal(dvec3 point) const override;
 
 private:
-  fvec3 _pos;
-  float _rad;
+  dvec3 _pos;
+  double _rad;
 };
 
 #endif /* defined(__rayz__sphere__) */

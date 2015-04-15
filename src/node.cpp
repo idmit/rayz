@@ -14,10 +14,10 @@ void node::add_child(std::unique_ptr<node> &&child) {
   _children.push_back(std::move(child));
 }
 
-bool node::intersect(ray ray, fvec3 *intersection_point)  const{
+bool node::intersect(ray ray, dvec3 *intersection_point) const {
   return _geom->intersect(ray, intersection_point);
 }
 
-float node::get_color(fvec3 point)  const{ return _geom->get_color(point); }
+double node::get_color(dvec3 point) const { return _geom->get_color(point); }
 
-fvec3 node::get_normal(fvec3 point) const { return _geom->get_normal(point); }
+dvec3 node::get_normal(dvec3 point) const { return _geom->get_normal(point); }

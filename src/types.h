@@ -11,12 +11,12 @@
 
 #include "glm/glm.hpp"
 
-using fvec3 = glm::fvec3;
-using fmat4 = glm::fmat4;
+using dvec3 = glm::dvec3;
+using dmat4 = glm::dmat4;
 
 struct ray {
-  fvec3 origin;
-  fvec3 dir;
+  dvec3 origin;
+  dvec3 dir;
 };
 
 #endif /* defined(__rayz__types__) */

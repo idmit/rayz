@@ -13,13 +13,13 @@
 
 class torus : public geometry {
 public:
-  torus(float rad, float tube_rad);
-  virtual bool intersect(ray ray, fvec3 *intersection_point) const override;
-  virtual float get_color(fvec3 point) const override;
-  virtual fvec3 get_normal(fvec3 point) const override;
+  torus(double rad, double tube_rad);
+  virtual bool intersect(ray ray, dvec3 *intersection_point) const override;
+  virtual double get_color(dvec3 point) const override;
+  virtual dvec3 get_normal(dvec3 point) const override;
 
 private:
-  float _rad, _tube_rad;
+  double _rad, _tube_rad;
 };
 
 #endif /* defined(__rayz__torus__) */
