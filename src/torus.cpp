@@ -10,7 +10,9 @@
 
 torus::torus(double rad, double tube_rad) : _rad(rad), _tube_rad(tube_rad){};
 
-bool torus::intersect(ray ray, dvec3 *intersectionPoint) const { return false; }
+bool torus::intersect(dmat4 lcs, ray ray, dvec3 *intersectionPoint) const {
+  return false;
+}
 
 double torus::get_color(dvec3 intersectionPoint) const { return 0; }
 

@@ -13,7 +13,8 @@
 
 class geometry {
 public:
-  virtual bool intersect(ray ray, dvec3 *intersection_point) const = 0;
+  virtual bool intersect(dmat4 lcs, ray ray,
+                         dvec3 *intersection_point) const = 0;
   virtual double get_color(dvec3 point) const = 0;
   virtual dvec3 get_normal(dvec3 point) const = 0;
   virtual ~geometry(){};

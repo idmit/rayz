@@ -15,7 +15,7 @@ void node::add_child(std::unique_ptr<node> &&child) {
 }
 
 bool node::intersect(ray ray, dvec3 *intersection_point) const {
-  return _geom->intersect(ray, intersection_point);
+  return _geom->intersect(_lcs, ray, intersection_point);
 }
 
 double node::get_color(dvec3 point) const { return _geom->get_color(point); }

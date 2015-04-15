@@ -15,7 +15,8 @@
 class triangle : public geometry {
 public:
   triangle(std::array<dvec3, 3> vertices);
-  virtual bool intersect(ray ray, dvec3 *intersection_point) const override;
+  virtual bool intersect(dmat4 lcs, ray ray,
+                         dvec3 *intersection_point) const override;
   virtual double get_color(dvec3 point) const override;
   virtual dvec3 get_normal(dvec3 point) const override;
 

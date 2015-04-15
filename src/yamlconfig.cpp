@@ -91,6 +91,23 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
                              sphere_config["radius"].as<double>());
 }
 
+dmat4 parse_lcs(YAML::Node lcs_config) {
+  dmat4 lcs;
+
+  //  if (!lcs_config) {
+  return lcs;
+  //  }
+  //
+  //    lcs
+  //
+  //  pos.x = position_config["x"].as<double>();
+  //  pos.y = position_config["y"].as<double>();
+  //  pos.z = position_config["z"].as<double>();
+  //
+  //  return make_unique<sphere>(dvec3{ 0, 50, 0 },
+  //                             sphere_config["radius"].as<double>());
+}
+
 std::unique_ptr<camera> parse_camera(YAML::Node camera_config) {
   dvec3 pos, orient;
   double fovx = 0, fovy = 0;

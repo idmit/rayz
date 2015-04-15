@@ -10,8 +10,8 @@
 
 triangle::triangle(std::array<dvec3, 3> vertices) : _vertices(vertices){};
 
-bool triangle::intersect(ray ray, dvec3 *intersectionPoint) const {
-  return false;
+bool triangle::intersect(dmat4 lcs, ray ray, dvec3 *intersection_point) const {
+  return true;
 }
 
 double triangle::get_color(dvec3 intersectionPoint) const { return 0; }

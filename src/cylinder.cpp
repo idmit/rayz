@@ -10,7 +10,31 @@
 
 cylinder::cylinder(double rad, double height) : _rad(rad), _height(height){};
 
-bool cylinder::intersect(ray ray, dvec3 *intersectionPoint) const {
+bool cylinder::intersect(dmat4 lcs, ray ray, dvec3 *intersectionPoint) const {
+  //  dvec3 dist = -_pos + ray.origin;
+  //  double b = glm::dot(dist, ray.dir);
+  //  double c = glm::dot(dist, dist) - _rad * _rad;
+  //
+  //  double d = b * b - c;
+  //
+  //  if (d < 0) {
+  //    return false;
+  //  }
+  //
+  //  double e = glm::sqrt(d);
+  //
+  //  double t = (-b - e);
+  //  if (t > 0) {
+  //    *intersection_point = ray.origin + ray.dir * t;
+  //    return true;
+  //  }
+  //
+  //  t = (-b + e);
+  //  if (t > 0) {
+  //    *intersection_point = ray.origin + ray.dir * t;
+  //    return true;
+  //  }
+
   return false;
 }
 

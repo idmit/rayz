@@ -24,6 +24,7 @@ public:
 
 private:
   dmat4 _lcs;
+  //    dvec3 _w,
   std::unique_ptr<geometry> _geom;
   std::vector<std::unique_ptr<node> > _children;
 };

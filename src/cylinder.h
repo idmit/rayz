@@ -14,7 +14,8 @@
 class cylinder : public geometry {
 public:
   cylinder(double rad, double height);
-  virtual bool intersect(ray ray, dvec3 *intersection_point) const override;
+  virtual bool intersect(dmat4 lcs, ray ray,
+                         dvec3 *intersection_point) const override;
   virtual double get_color(dvec3 point) const override;
   virtual dvec3 get_normal(dvec3 point) const override;
 
