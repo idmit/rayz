@@ -21,3 +21,5 @@ bool node::intersect(ray ray, dvec3 *intersection_point) const {
 double node::get_color(dvec3 point) const { return _geom->get_color(point); }
 
 dvec3 node::get_normal(dvec3 point) const { return _geom->get_normal(point); }
+
+void node::set_lcs(const dmat4 &lcs) { _lcs = lcs; }

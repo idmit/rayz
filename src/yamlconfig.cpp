@@ -6,12 +6,17 @@
 //  Copyright (c) 2015 Ivan Dmitrievsky. All rights reserved.
 //
 
+#include "glm/gtx/euler_angles.hpp"
+#include "glm/gtx/transform.hpp"
+
 #include "yamlconfig.h"
 
 template <typename T, typename... Args>
 std::unique_ptr<T> make_unique(Args&&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
+
+dmat4 parse_lcs(YAML::Node lcs_config);
 
 std::unique_ptr<node> parse_node(YAML::Node node_config) {
   YAML::Node ymlnode;
@@ -33,6 +38,7 @@ std::unique_ptr<node> parse_node(YAML::Node node_config) {
   }
 
   if (parsed_node) {
+    parsed_node->set_lcs(parse_lcs(node_config[0]["lcs"]));
     for (unsigned long i = 2; i < node_config.size() && node_config[i]["node"];
          ++i) {
       auto child = std::move(parse_node(node_config[i]["node"]));
@@ -93,19 +99,27 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
 
 dmat4 parse_lcs(YAML::Node lcs_config) {
   dmat4 lcs;
+  dvec3 t, r, s;
 
-  //  if (!lcs_config) {
+  if (!lcs_config) {
+    return lcs;
+  }
+
+  t.x = lcs_config["x"].as<double>();
+  t.y = lcs_config["y"].as<double>();
+  t.z = lcs_config["z"].as<double>();
+
+  r.x = lcs_config["h"].as<double>();
+  r.y = lcs_config["p"].as<double>();
+  r.z = lcs_config["r"].as<double>();
+
+  s.x = lcs_config["sx"].as<double>();
+  s.y = lcs_config["sy"].as<double>();
+  s.z = lcs_config["sz"].as<double>();
+
+  lcs = glm::translate(glm::scale(glm::yawPitchRoll(r.x, r.y, r.z), s), t);
+
   return lcs;
-  //  }
-  //
-  //    lcs
-  //
-  //  pos.x = position_config["x"].as<double>();
-  //  pos.y = position_config["y"].as<double>();
-  //  pos.z = position_config["z"].as<double>();
-  //
-  //  return make_unique<sphere>(dvec3{ 0, 50, 0 },
-  //                             sphere_config["radius"].as<double>());
 }
 
 std::unique_ptr<camera> parse_camera(YAML::Node camera_config) {
