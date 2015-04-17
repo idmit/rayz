@@ -108,15 +108,16 @@ dmat4 parse_lcs(YAML::Node lcs_config) {
   t.y = lcs_config["y"].as<double>();
   t.z = lcs_config["z"].as<double>();
 
-  r.x = lcs_config["h"].as<double>();
-  r.y = lcs_config["p"].as<double>();
-  r.z = lcs_config["r"].as<double>();
+  r.x = glm::radians(lcs_config["h"].as<double>());
+  r.y = glm::radians(lcs_config["p"].as<double>());
+  r.z = glm::radians(lcs_config["r"].as<double>());
 
   s.x = lcs_config["sx"].as<double>();
   s.y = lcs_config["sy"].as<double>();
   s.z = lcs_config["sz"].as<double>();
 
-  lcs = glm::translate(glm::scale(glm::yawPitchRoll(r.x, r.y, r.z), s), t);
+  lcs =
+      glm::scale(glm::translate(lcs, t), s) * glm::eulerAngleYXZ(r.x, r.y, r.z);
 
   return lcs;
 }
