@@ -22,7 +22,10 @@ public:
   double get_color(dvec3 point) const;
   dvec3 get_normal(dvec3 point) const;
 
+  std::vector<const node *> children() const;
+
   void set_lcs(const dmat4 &lcs);
+  dmat4 get_lcs() const;
 
 private:
   dmat4 _lcs;

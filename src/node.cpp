@@ -22,4 +22,15 @@ double node::get_color(dvec3 point) const { return _geom->get_color(point); }
 
 dvec3 node::get_normal(dvec3 point) const { return _geom->get_normal(point); }
 
+std::vector<const node *> node::children() const {
+  std::vector<const node *> children;
+  for (auto &pointer : _children) {
+    const node *const v = pointer.get();
+    children.push_back(v);
+  }
+  return children;
+}
+
 void node::set_lcs(const dmat4 &lcs) { _lcs = lcs; }
+
+dmat4 node::get_lcs() const { return _lcs; }
