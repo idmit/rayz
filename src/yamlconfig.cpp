@@ -54,7 +54,7 @@ std::unique_ptr<node> parse_node(YAML::Node node_config) {
 std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
   std::unique_ptr<triangle> parsed_node = nullptr;
   std::array<dvec3, 3> args;
-  std::array<std::string, 3> keys({ "p0", "p1", "p2" });
+  std::array<std::string, 3> keys = { "p0", "p1", "p2" };
 
   for (unsigned long i = 0; i < args.size(); ++i) {
     auto point_config = triangle_config[keys[i]];
@@ -93,8 +93,7 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
     return nullptr;
   }
 
-  return make_unique<sphere>(dvec3{ 0, 50, 0 },
-                             sphere_config["radius"].as<double>());
+  return make_unique<sphere>(sphere_config["radius"].as<double>());
 }
 
 dmat4 parse_lcs(YAML::Node lcs_config) {

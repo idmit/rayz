@@ -8,10 +8,10 @@
 
 #include "sphere.h"
 
-sphere::sphere(dvec3 pos, double rad) : _pos(pos), _rad(rad) {}
+sphere::sphere(double rad) : _rad(rad) {}
 
 bool sphere::intersect(dmat4 lcs, ray ray, dvec3 *intersection_point) const {
-  dvec3 dist = -_pos + ray.origin;
+  dvec3 dist = ray.origin;
   double b = glm::dot(dist, ray.dir);
   double c = glm::dot(dist, dist) - _rad * _rad;
 
@@ -41,7 +41,7 @@ bool sphere::intersect(dmat4 lcs, ray ray, dvec3 *intersection_point) const {
 double sphere::get_color(dvec3 point) const { return 0; }
 
 dvec3 sphere::get_normal(dvec3 point) const {
-  dvec3 n(point - _pos);
+  dvec3 n(point);
   glm::normalize(n);
   return n;
 }
