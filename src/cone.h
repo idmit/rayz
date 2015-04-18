@@ -1,19 +1,19 @@
 //
-//  cylinder.h
+//  cone.h
 //  rayz
 //
-//  Created by Иван Дмитриевский on 13/04/15.
+//  Created by Иван Дмитриевский on 17/04/15.
 //  Copyright (c) 2015 Ivan Dmitrievsky. All rights reserved.
 //
 
-#ifndef __rayz__cylinder__
-#define __rayz__cylinder__
+#ifndef __rayz__cone__
+#define __rayz__cone__
 
 #include "geometry.h"
 
-class cylinder : public geometry {
+class cone : public geometry {
 public:
-  cylinder(double rad, double height);
+  cone(double rad, double height);
   virtual bool intersect(
       ray ray, dvec3 *close_intersection_point,
       dvec3 *far_intersection_point = nullptr,
@@ -25,4 +25,4 @@ private:
   double _rad, _height;
 };
 
-#endif /* defined(__rayz__cylinder__) */
+#endif /* defined(__rayz__cone__) */

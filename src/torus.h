@@ -14,8 +14,10 @@
 class torus : public geometry {
 public:
   torus(double rad, double tube_rad);
-  virtual bool intersect(dmat4 lcs, ray ray,
-                         dvec3 *intersection_point) const override;
+  virtual bool intersect(
+      ray ray, dvec3 *close_intersection_point,
+      dvec3 *far_intersection_point = nullptr,
+      std::pair<double, double> *param_vals = nullptr) const override;
   virtual double get_color(dvec3 point) const override;
   virtual dvec3 get_normal(dvec3 point) const override;
 

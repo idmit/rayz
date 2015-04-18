@@ -10,10 +10,11 @@
 
 sphere::sphere(double rad) : _rad(rad) {}
 
-bool sphere::intersect(dmat4 lcs, ray ray, dvec3 *intersection_point) const {
-  dvec3 dist = ray.origin;
-  double b = glm::dot(dist, ray.dir);
-  double c = glm::dot(dist, dist) - _rad * _rad;
+bool sphere::intersect(ray ray, dvec3 *close_intersection_point,
+                       dvec3 *far_intersection_point,
+                       std::pair<double, double> *param_vals) const {
+  double b = glm::dot(ray.origin, ray.dir);
+  double c = glm::dot(ray.origin, ray.origin) - _rad * _rad;
 
   double d = b * b - c;
 
@@ -21,21 +22,32 @@ bool sphere::intersect(dmat4 lcs, ray ray, dvec3 *intersection_point) const {
     return false;
   }
 
+  bool intersected = false;
   double e = glm::sqrt(d);
 
   double t = (-b - e);
   if (t > 0) {
-    *intersection_point = ray.origin + ray.dir * t;
-    return true;
+    *close_intersection_point = ray.origin + ray.dir * t;
+    intersected = true;
   }
 
   t = (-b + e);
   if (t > 0) {
-    *intersection_point = ray.origin + ray.dir * t;
-    return true;
+    if (intersected) {
+      if (far_intersection_point) {
+        *far_intersection_point = ray.origin + ray.dir * t;
+      }
+      if (param_vals) {
+        param_vals->first = -b - e;
+        param_vals->second = t;
+      }
+    } else {
+      *close_intersection_point = ray.origin + ray.dir * t;
+      intersected = true;
+    }
   }
 
-  return false;
+  return intersected;
 }
 
 double sphere::get_color(dvec3 point) const { return 0; }
