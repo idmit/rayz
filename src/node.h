@@ -15,21 +15,22 @@
 
 class node {
 public:
-  node(std::unique_ptr<geometry> &&geom);
   void add_child(std::unique_ptr<node> &&child);
 
-  bool intersect(ray ray, dvec3 *intersection_point) const;
-  double get_color(dvec3 point) const;
-  dvec3 get_normal(dvec3 point) const;
+  virtual bool intersect(
+      ray ray, dvec3 *close_intersection_point,
+      dvec3 *far_intersection_point = nullptr,
+      std::pair<double, double> *param_vals = nullptr) const = 0;
+  virtual double get_color(dvec3 point) const = 0;
+  virtual dvec3 get_normal(dvec3 point) const = 0;
 
   std::vector<const node *> children() const;
 
   void set_lcs(const dmat4 &lcs);
   dmat4 get_lcs() const;
 
-private:
+protected:
   dmat4 _lcs;
-  std::unique_ptr<geometry> _geom;
   std::vector<std::unique_ptr<node> > _children;
 };
 

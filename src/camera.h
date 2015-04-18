@@ -34,9 +34,6 @@ private:
 
   double _dist;
   double _fovx, _fovy;
-
-  glm::dvec4 _send_ray(const node* node, const ray& parent_ray,
-                       bool& intersected);
 };
 
 #endif /* defined(__rayz__camera__) */

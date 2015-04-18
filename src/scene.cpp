@@ -14,9 +14,17 @@
 std::unique_ptr<camera> scene::create(std::string scene_desc, scene* scene) {
   YAML::Node scene_config = YAML::LoadFile(scene_desc);
 
-  for (unsigned long i = 1; i < scene_config.size() && scene_config[i]["node"];
-       ++i) {
-    scene->_nodes.emplace_back(std::move(parse_node(scene_config[i]["node"])));
+  for (unsigned long i = 1; i < scene_config.size(); ++i) {
+    if (scene_config[i]["node"]) {
+      scene->_nodes.emplace_back(
+          std::move(parse_plain_node(scene_config[i]["node"])));
+    } else if (scene_config[i]["csg_intersection"]) {
+      scene->_nodes.emplace_back(std::move(
+          parse_csg_intersection(scene_config[i]["csg_intersection"])));
+    } else if (scene_config[i]["csg_union"]) {
+      scene->_nodes.emplace_back(
+          std::move(parse_csg_union(scene_config[i]["csg_union"])));
+    }
   }
 
   return parse_camera(scene_config[0]["camera"]);

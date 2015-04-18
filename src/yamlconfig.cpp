@@ -9,6 +9,9 @@
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/transform.hpp"
 
+#include "csg_intersection.h"
+#include "csg_union.h"
+
 #include "yamlconfig.h"
 
 template <typename T, typename... Args>
@@ -18,7 +21,7 @@ std::unique_ptr<T> make_unique(Args&&... args) {
 
 dmat4 parse_lcs(YAML::Node lcs_config);
 
-std::unique_ptr<node> parse_node(YAML::Node node_config) {
+std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
   YAML::Node ymlnode;
   std::unique_ptr<node> parsed_node = nullptr;
   std::unique_ptr<geometry> geom = nullptr;
@@ -34,14 +37,14 @@ std::unique_ptr<node> parse_node(YAML::Node node_config) {
   };
 
   if (geom) {
-    parsed_node = make_unique<node>(std::move(geom));
+    parsed_node = make_unique<plain_node>(std::move(geom));
   }
 
   if (parsed_node) {
     parsed_node->set_lcs(parse_lcs(node_config[0]["lcs"]));
     for (unsigned long i = 2; i < node_config.size() && node_config[i]["node"];
          ++i) {
-      auto child = std::move(parse_node(node_config[i]["node"]));
+      auto child = std::move(parse_plain_node(node_config[i]["node"]));
       if (child) {
         parsed_node->add_child(std::move(child));
       }
@@ -94,6 +97,42 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
   }
 
   return make_unique<sphere>(sphere_config["radius"].as<double>());
+}
+
+std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config) {
+  if (!csg_config) {
+    return nullptr;
+  }
+
+  if (!csg_config["left_node"]) {
+    return nullptr;
+  }
+
+  if (!csg_config["right_node"]) {
+    return nullptr;
+  }
+
+  return make_unique<csg_intersection>(
+      std::move(parse_plain_node(csg_config["left_node"])),
+      std::move(parse_plain_node(csg_config["right_node"])));
+}
+
+std::unique_ptr<node> parse_csg_union(YAML::Node csg_config) {
+  if (!csg_config) {
+    return nullptr;
+  }
+
+  if (!csg_config["left_node"]) {
+    return nullptr;
+  }
+
+  if (!csg_config["right_node"]) {
+    return nullptr;
+  }
+
+  return make_unique<csg_union>(
+      std::move(parse_plain_node(csg_config["left_node"])),
+      std::move(parse_plain_node(csg_config["right_node"])));
 }
 
 dmat4 parse_lcs(YAML::Node lcs_config) {
