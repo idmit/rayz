@@ -16,14 +16,21 @@ std::unique_ptr<camera> scene::create(std::string scene_desc, scene* scene) {
 
   for (unsigned long i = 1; i < scene_config.size(); ++i) {
     if (scene_config[i]["node"]) {
-      scene->_nodes.emplace_back(
-          std::move(parse_plain_node(scene_config[i]["node"])));
+      auto node = parse_plain_node(scene_config[i]["node"]);
+      if (node) {
+        scene->_nodes.emplace_back(std::move(node));
+      }
+
     } else if (scene_config[i]["csg_intersection"]) {
-      scene->_nodes.emplace_back(std::move(
-          parse_csg_intersection(scene_config[i]["csg_intersection"])));
+      auto node = parse_plain_node(scene_config[i]["csg_intersection"]);
+      if (node) {
+        scene->_nodes.emplace_back(std::move(node));
+      }
     } else if (scene_config[i]["csg_union"]) {
-      scene->_nodes.emplace_back(
-          std::move(parse_csg_union(scene_config[i]["csg_union"])));
+      auto node = parse_plain_node(scene_config[i]["csg_union"]);
+      if (node) {
+        scene->_nodes.emplace_back(std::move(node));
+      }
     }
   }
 
