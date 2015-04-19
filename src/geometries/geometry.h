@@ -10,7 +10,7 @@
 #define rayz_geometry_h
 
 #include <utility>
-#include "types.h"
+#include "../types.h"
 
 class geometry {
 public:

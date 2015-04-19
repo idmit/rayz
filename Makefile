@@ -1,31 +1,41 @@
-CXX = g++
-CFLAGS = -g -Wall -O2 -std=c++11 -pedantic-errors
-LIBS = -Llib -lpng -lyaml-cpp
-INCLUDES = -Iinclude
+CXX       = g++
+LD        = g++
 
-TARGET = rayz
-BINDIR = bin
-SRCDIR = src
-BUILDDIR = build
+CFLAGS    = -g -Wall -std=c++11 -pedantic-errors
+LIBS      = -Llib -lpng -lyaml-cpp -ltinyobjloader
 
-.PHONY: destdir all clean
+MODULES   = geometries nodes .
+SRC_DIR   = $(addprefix src/, $(MODULES))
+BUILD_DIR = $(addprefix build/, $(MODULES))
+BIN_DIR   = bin
 
-all: $(TARGET)
+SRC       = $(foreach sdir, $(SRC_DIR), $(wildcard $(sdir)/*.cpp))
+OBJ       = $(patsubst src/%.cpp, build/%.o, $(SRC))
+INCLUDES  = $(addprefix -I, $(SRC_DIR)) -Iinclude
 
-OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(wildcard $(SRCDIR)/*.cpp))
-HEADERS = $(wildcard $(SRCDIR)/*.h)
+TARGET    = rayz
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS)
-	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
+vpath %.cpp $(SRC_DIR)
 
-.PRECIOUS: $(TARGET) $(OBJECTS)
+define make-goal
+$1/%.o: %.cpp
+	$(CXX) $(CFLAGS) $(INCLUDES) -c $$< -o $$@
+endef
 
-$(TARGET): destdir $(OBJECTS)
-	$(CXX) $(OBJECTS) -Wall $(LIBS) -o $(BINDIR)/$@
+.PHONY: all checkdirs clean
 
-destdir:
-	mkdir -p ./bin
-	mkdir -p ./build
+all: checkdirs $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(LD) $(LIBS) $^ -o $(BIN_DIR)/$@
+
+checkdirs: $(BUILD_DIR)
+
+$(BUILD_DIR):
+	mkdir -p $@
 
 clean:
-	-rm -f $(BUILDDIR)/* $(BINDIR)/$(TARGET)
+	rm $(BIN_DIR)/$(TARGET)
+	rm -rf build/*
+
+$(foreach bdir, $(BUILD_DIR), $(eval $(call make-goal, $(bdir))))

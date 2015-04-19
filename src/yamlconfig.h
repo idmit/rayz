@@ -10,16 +10,14 @@
 #define __rayz__yamlconfig__
 
 #include <memory>
-#include "plain_node.h"
-
 #include "yaml-cpp/yaml.h"
 
 #include "camera.h"
 
-#include "triangle.h"
-#include "cylinder.h"
-#include "torus.h"
-#include "sphere.h"
+#include "geometries/triangle.h"
+#include "geometries/cylinder.h"
+#include "geometries/torus.h"
+#include "geometries/sphere.h"
 
 std::unique_ptr<node> parse_plain_node(YAML::Node node_config);
 std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config);

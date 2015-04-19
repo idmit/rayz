@@ -9,8 +9,9 @@
 #include "glm/gtx/euler_angles.hpp"
 #include "glm/gtx/transform.hpp"
 
-#include "csg_intersection.h"
-#include "csg_union.h"
+#include "nodes/plain_node.h"
+#include "nodes/csg_intersection.h"
+#include "nodes/csg_union.h"
 
 #include "yamlconfig.h"
 

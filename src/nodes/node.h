@@ -11,7 +11,7 @@
 
 #include <memory>
 #include <vector>
-#include "geometry.h"
+#include "../geometries/geometry.h"
 
 class node {
 public:

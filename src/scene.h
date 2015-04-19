@@ -11,7 +11,7 @@
 
 #include <memory>
 #include <vector>
-#include "node.h"
+#include "nodes/node.h"
 #include "camera.h"
 
 class camera;
