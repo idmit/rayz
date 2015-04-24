@@ -10,7 +10,8 @@
 #include "opts.h"
 
 #include "scene.h"
-#include "camera.h"
+
+#include "tinyobjloader/tiny_obj_loader.h"
 
 int main(int argc, const char* argv[]) {
 
@@ -32,6 +33,11 @@ int main(int argc, const char* argv[]) {
   }
 
   cam->render(s, resx, resy).write(output_img);
+
+  std::vector<tinyobj::shape_t> shapes;
+  std::vector<tinyobj::material_t> materials;
+
+  tinyobj::LoadObj(shapes, materials, "bunny.obj");
 
   return 0;
 }
