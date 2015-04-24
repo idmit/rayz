@@ -12,9 +12,7 @@
 
 cylinder::cylinder(double rad, double height) : _rad(rad), _height(height){};
 
-bool cylinder::intersect(ray ray, dvec3 *close_intersection_point,
-                         dvec3 *far_intersection_point,
-                         std::pair<double, double> *param_vals) const {
+cylinder::ray_path cylinder::intersect(ray ray) const {
 
   double ts[4] = { INFINITY, INFINITY, INFINITY, INFINITY };
 
@@ -53,24 +51,20 @@ bool cylinder::intersect(ray ray, dvec3 *close_intersection_point,
     }
   }
 
+  ray_path list;
+
   std::sort(std::begin(ts), std::end(ts));
-  bool intersected = false;
   if (ts[0] < INFINITY) {
-    *close_intersection_point = ray.origin + ray.dir * ts[0];
-    intersected = true;
+    list.push_back({ ts[0], geometry::IN });
   }
 
-  if (ts[1] < INFINITY && far_intersection_point) {
-    *far_intersection_point = ray.origin + ray.dir * ts[1];
-  }
-  if (ts[1] < INFINITY && param_vals) {
-    param_vals->first = ts[0];
-    param_vals->second = ts[1];
+  if (ts[1] < INFINITY) {
+    list.push_back({ ts[1], geometry::OUT });
   }
 
-  return intersected;
+  return list;
 }
 
-double cylinder::get_color(dvec3 intersectionPoint) const { return 0; }
+double cylinder::get_color(dvec3 point) const { return 0; }
 
 dvec3 cylinder::get_normal(dvec3 point) const { return { 0, 0, 0 }; }

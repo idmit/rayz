@@ -11,67 +11,40 @@
 csg_union::csg_union(std::unique_ptr<node> &&lhs, std::unique_ptr<node> &&rhs)
     : _lhs(std::move(lhs)), _rhs(std::move(rhs)){};
 
-bool csg_union::intersect(ray ray, dvec3 *close_intersection_point,
-                          dvec3 *far_intersection_point,
-                          std::pair<double, double> *param_vals) const {
-  bool li, ri;
-  std::pair<dvec3, dvec3> lpoints, rpoints;
-  std::pair<double, double> lparams, rparams;
+geometry::ray_path csg_union::intersect(ray ray) const {
+  auto list = _lhs->intersect(ray);
+  auto rhs = _rhs->intersect(ray);
 
-  li = _lhs->intersect(ray, &lpoints.first, &lpoints.second, &lparams);
-  ri = _rhs->intersect(ray, &rpoints.first, &rpoints.second, &rparams);
+  for (const auto &pair : rhs) {
+    list.push_back(pair);
+  }
+  list.sort();
 
-  if (!li && !ri) {
-    return false;
+  geometry::ray_path out_list;
+
+  unsigned depth = 0;
+  auto left = list.begin();
+  for (auto it = list.begin(); it != list.end(); ++it) {
+    switch (it->second) {
+      case geometry::IN:
+        if (depth == 0) {
+          left = it;
+        }
+        ++depth;
+        break;
+      case geometry::OUT:
+        --depth;
+        if (depth == 0) {
+          out_list.push_back(*left);
+          out_list.push_back(*it);
+        }
+        break;
+      default:
+        break;
+    }
   }
 
-  std::pair<dvec3, dvec3> small = rpoints, big = lpoints;
-  std::pair<double, double> small_pms = rparams, big_pms = lparams;
-
-  if (lparams.second - lparams.first < rparams.second - rparams.first) {
-    small = lpoints;
-    big = rpoints;
-    small_pms = lparams;
-    big_pms = rparams;
-  }
-
-  if (small_pms.first < big_pms.first) {
-    *close_intersection_point = small.first;
-    if (far_intersection_point) {
-      *far_intersection_point = big.second;
-    }
-    if (param_vals) {
-      param_vals->first = small_pms.first;
-      param_vals->second = big_pms.second;
-    }
-    return true;
-  }
-
-  if (big_pms.first < small_pms.first && small_pms.second < big_pms.second) {
-    *close_intersection_point = big.first;
-    if (far_intersection_point) {
-      *far_intersection_point = big.second;
-    }
-    if (param_vals) {
-      param_vals->first = big_pms.first;
-      param_vals->second = big_pms.second;
-    }
-    return true;
-  }
-
-  if (big_pms.first < small_pms.first && big_pms.second < small_pms.second) {
-    *close_intersection_point = big.first;
-    if (far_intersection_point) {
-      *far_intersection_point = small.second;
-    }
-    if (param_vals) {
-      param_vals->first = big_pms.first;
-      param_vals->second = small_pms.second;
-    }
-    return true;
-  }
-
-  return true;
+  return out_list;
 }
 
 double csg_union::get_color(dvec3 intersectionPoint) const { return 0; }

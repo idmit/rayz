@@ -15,10 +15,7 @@ class plain_node : public node {
 public:
   plain_node(std::unique_ptr<geometry> &&geom);
 
-  virtual bool intersect(
-      ray ray, dvec3 *close_intersection_point,
-      dvec3 *far_intersection_point = nullptr,
-      std::pair<double, double> *param_vals = nullptr) const override;
+  virtual geometry::ray_path intersect(ray ray) const override;
   virtual double get_color(dvec3 point) const override;
   virtual dvec3 get_normal(dvec3 point) const override;
 

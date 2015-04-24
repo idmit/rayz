@@ -13,16 +13,13 @@
 
 class cone : public geometry {
 public:
-  cone(double rad, double height);
-  virtual bool intersect(
-      ray ray, dvec3 *close_intersection_point,
-      dvec3 *far_intersection_point = nullptr,
-      std::pair<double, double> *param_vals = nullptr) const override;
+  cone(double bottom_rad, double top_rad, double height);
+  virtual ray_path intersect(ray ray) const override;
   virtual double get_color(dvec3 point) const override;
   virtual dvec3 get_normal(dvec3 point) const override;
 
 private:
-  double _rad, _height;
+  double _bottom_rad, _top_rad, _height;
 };
 
 #endif /* defined(__rayz__cone__) */

@@ -12,9 +12,7 @@
 
 torus::torus(double rad, double tube_rad) : _rad(rad), _tube_rad(tube_rad){};
 
-bool torus::intersect(ray ray, dvec3 *close_intersection_point,
-                      dvec3 *far_intersection_point,
-                      std::pair<double, double> *param_vals) const {
+geometry::ray_path torus::intersect(ray ray) const {
   double alpha = glm::dot(ray.dir, ray.dir);
   double beta = 2 * glm::dot(ray.origin, ray.dir);
   double gamma =
@@ -31,22 +29,30 @@ bool torus::intersect(ray ray, dvec3 *close_intersection_point,
 
   double x[4];
   int num = SolveP4(x, a3 / a4, a2 / a4, a1 / a4, a0 / a4);
+
+  ray_path list;
+
   if (num < 2) {
-    return false;
+    return list;
   }
 
   if (num == 2) {
-    *close_intersection_point = ray.origin + glm::min(x[0], x[1]) * ray.dir;
+    list.push_back({ x[0], geometry::IN });
+    list.push_back({ x[1], geometry::OUT });
   }
 
   if (num == 4) {
     std::sort(std::begin(x), std::end(x));
-    *close_intersection_point = ray.origin + x[0] * ray.dir;
+    list.push_back({ x[0], geometry::IN });
+    list.push_back({ x[1], geometry::OUT });
+
+    list.push_back({ x[2], geometry::IN });
+    list.push_back({ x[3], geometry::OUT });
   }
 
-  return true;
+  return list;
 }
 
-double torus::get_color(dvec3 intersectionPoint) const { return 0; }
+double torus::get_color(dvec3 point) const { return 0; }
 
 dvec3 torus::get_normal(dvec3 point) const { return { 0, 0, 0 }; }

@@ -38,7 +38,7 @@ camera::camera(dvec3 pos, double fovx, double fovy, double heading,
   _lookat = _eye - _w * dist;
 }
 
-png::image<png::rgba_pixel_16> camera::render(const scene& scene,
+png::image<png::rgba_pixel_16> camera::render(const scene &scene,
                                               unsigned long resX,
                                               unsigned long resY) {
   png::image<png::rgba_pixel_16> img(resX, resY);
@@ -55,24 +55,23 @@ png::image<png::rgba_pixel_16> camera::render(const scene& scene,
 
   for (long i = resY - 1; i >= 0; --i) {
     for (long j = 0; j < resX; ++j) {
-      for (auto& node : scene.nodes()) {
+      for (auto &node : scene.nodes()) {
         ray world_ray;
         world_ray.origin = _eye;
         world_ray.dir = glm::normalize(x * _u + y * _v - _dist * _w);
 
-        if (i == 408 && j == resX / 2) {
+        if (i == resX / 2 && j == resY / 2) {
           printf("");
         }
 
-        bool intersected = false;
         glm::dvec3 closest_point;
-        intersected = node->intersect(world_ray, &closest_point);
-        if (intersected) {
-          double dist = glm::distance(_eye, closest_point);
+        auto intersected = node->intersect(world_ray);
+        if (!intersected.empty()) {
+          closest_point =
+              world_ray.origin + world_ray.dir * intersected.front().first;
           if (closest_points[i][j] < 0) {
-            closest_points[i][j] = INFINITY;
+            closest_points[i][j] = glm::distance(_eye, closest_point);
           }
-          closest_points[i][j] = glm::min(closest_points[i][j], dist);
         }
       }
       max_intensity = glm::max(max_intensity, closest_points[i][j]);

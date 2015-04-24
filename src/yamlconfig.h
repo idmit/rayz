@@ -22,6 +22,8 @@
 std::unique_ptr<node> parse_plain_node(YAML::Node node_config);
 std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config);
 std::unique_ptr<node> parse_csg_union(YAML::Node csg_config);
+std::unique_ptr<node> parse_csg_difference(YAML::Node csg_config);
+std::unique_ptr<node> parse_node(YAML::Node node_config);
 std::unique_ptr<triangle> parse_triangle(YAML::Node node_config);
 std::unique_ptr<cylinder> parse_cylinder(YAML::Node cylinder_config);
 std::unique_ptr<torus> parse_torus(YAML::Node torus_config);

@@ -10,13 +10,14 @@
 #include "glm/gtx/transform.hpp"
 
 #include "nodes/plain_node.h"
-#include "nodes/csg_intersection.h"
 #include "nodes/csg_union.h"
+#include "nodes/csg_intersection.h"
+#include "nodes/csg_difference.h"
 
 #include "yamlconfig.h"
 
 template <typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args) {
+std::unique_ptr<T> make_unique(Args &&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
@@ -43,9 +44,8 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
 
   if (parsed_node) {
     parsed_node->set_lcs(parse_lcs(node_config[0]["lcs"]));
-    for (unsigned long i = 2; i < node_config.size() && node_config[i]["node"];
-         ++i) {
-      auto child = std::move(parse_plain_node(node_config[i]["node"]));
+    for (unsigned long i = 2; i < node_config.size(); ++i) {
+      auto child = std::move(parse_node(node_config[i]));
       if (child) {
         parsed_node->add_child(std::move(child));
       }
@@ -114,8 +114,8 @@ std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config) {
   }
 
   return make_unique<csg_intersection>(
-      std::move(parse_plain_node(csg_config["left_node"])),
-      std::move(parse_plain_node(csg_config["right_node"])));
+      std::move(parse_node(csg_config["left_node"])),
+      std::move(parse_node(csg_config["right_node"])));
 }
 
 std::unique_ptr<node> parse_csg_union(YAML::Node csg_config) {
@@ -132,8 +132,44 @@ std::unique_ptr<node> parse_csg_union(YAML::Node csg_config) {
   }
 
   return make_unique<csg_union>(
-      std::move(parse_plain_node(csg_config["left_node"])),
-      std::move(parse_plain_node(csg_config["right_node"])));
+      std::move(parse_node(csg_config["left_node"])),
+      std::move(parse_node(csg_config["right_node"])));
+}
+
+std::unique_ptr<node> parse_csg_difference(YAML::Node csg_config) {
+  if (!csg_config) {
+    return nullptr;
+  }
+
+  if (!csg_config["left_node"]) {
+    return nullptr;
+  }
+
+  if (!csg_config["right_node"]) {
+    return nullptr;
+  }
+
+  return make_unique<csg_difference>(
+      std::move(parse_node(csg_config["left_node"])),
+      std::move(parse_node(csg_config["right_node"])));
+}
+
+std::unique_ptr<node> parse_node(YAML::Node node_config) {
+  if (!node_config) {
+    return nullptr;
+  }
+
+  if (node_config["node"]) {
+    return parse_plain_node(node_config["node"]);
+  } else if (node_config["csg_union"]) {
+    return parse_csg_union(node_config["csg_union"]);
+  } else if (node_config["csg_intersection"]) {
+    return parse_csg_intersection(node_config["csg_intersection"]);
+  } else if (node_config["csg_difference"]) {
+    return parse_csg_difference(node_config["csg_difference"]);
+  }
+
+  return nullptr;
 }
 
 dmat4 parse_lcs(YAML::Node lcs_config) {

@@ -17,10 +17,7 @@ class node {
 public:
   void add_child(std::unique_ptr<node> &&child);
 
-  virtual bool intersect(
-      ray ray, dvec3 *close_intersection_point,
-      dvec3 *far_intersection_point = nullptr,
-      std::pair<double, double> *param_vals = nullptr) const = 0;
+  virtual geometry::ray_path intersect(ray ray) const = 0;
   virtual double get_color(dvec3 point) const = 0;
   virtual dvec3 get_normal(dvec3 point) const = 0;
 

@@ -9,14 +9,29 @@
 #include "plain_node.h"
 
 void transform(dmat4 t, dvec3 *v) { *v = dvec3(t * glm::dvec4(*v, 1)); }
+geometry::ray_path transform(dmat4 t, ray pr, ray lr, geometry::ray_path list) {
+  geometry::ray_path out_list;
+
+  for (const auto &p : list) {
+    auto dir =
+        dvec3(t * glm::dvec4(lr.origin + lr.dir * p.first, 1)) - pr.origin;
+    for (unsigned i = 0; i < 3; ++i) {
+      if (dir[i] != 0) {
+        out_list.push_back({ dir[i] / pr.dir[i], p.second });
+        break;
+      }
+    }
+  }
+
+  return out_list;
+}
+
 dvec3 transform(dmat4 t, dvec3 v) { return dvec3(t * glm::dvec4(v, 1)); }
 
 plain_node::plain_node(std::unique_ptr<geometry> &&geom)
     : _geom(std::move(geom)){};
 
-bool plain_node::intersect(ray parent_ray, dvec3 *close_intersection_point,
-                           dvec3 *far_intersection_point,
-                           std::pair<double, double> *param_vals) const {
+geometry::ray_path plain_node::intersect(ray parent_ray) const {
   dmat4 to_parent_transform = _lcs;
   dmat4 to_node_transform = glm::inverse(to_parent_transform);
 
@@ -25,45 +40,21 @@ bool plain_node::intersect(ray parent_ray, dvec3 *close_intersection_point,
   lcs_ray.origin = transform(to_node_transform, parent_ray.origin);
   lcs_ray.dir = glm::normalize(glm::dmat3(to_node_transform) * parent_ray.dir);
 
-  bool intersected = false;
   std::pair<double, double> lparam_vals;
-  double min_dist = INFINITY;
-  if (_geom->intersect(lcs_ray, close_intersection_point,
-                       far_intersection_point, &lparam_vals)) {
-    transform(to_parent_transform, close_intersection_point);
-    if (far_intersection_point) {
-      transform(to_parent_transform, far_intersection_point);
-    }
-
-    min_dist = lparam_vals.first;
-    intersected = true;
-  }
+  auto list = _geom->intersect(lcs_ray);
+  list = transform(to_parent_transform, parent_ray, lcs_ray, list);
 
   for (auto &child : _children) {
-    bool child_intersected = false;
-    dvec3 close_child_point, far_child_point;
-    child_intersected = child->intersect(lcs_ray, &close_child_point,
-                                         &far_child_point, &lparam_vals);
-    transform(to_parent_transform, &close_child_point);
-    transform(to_parent_transform, &far_child_point);
-    if (child_intersected) {
-      intersected = true;
-      if (lparam_vals.first < min_dist) {
-        *close_intersection_point = close_child_point;
-        if (far_intersection_point) {
-          transform(to_parent_transform, far_child_point);
-        }
-        min_dist = lparam_vals.first;
-      }
+    auto child_list = child->intersect(lcs_ray);
+    child_list =
+        transform(to_parent_transform, parent_ray, lcs_ray, child_list);
+    for (const auto &pair : child_list) {
+      list.push_back(pair);
     }
   }
+  list.sort();
 
-  if (param_vals) {
-    *param_vals = lparam_vals;
-    param_vals->first = min_dist;
-  }
-
-  return intersected;
+  return list;
 }
 
 double plain_node::get_color(dvec3 point) const {
