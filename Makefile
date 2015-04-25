@@ -1,8 +1,8 @@
 CXX       = g++
 LD        = g++
 
-CFLAGS    = -g -Wall -std=c++11 -pedantic-errors
-LIBS      = -Llib -lpng -lyaml-cpp -lpoly34 -ltinyobjloader
+CFLAGS    = -g -Wall -Wno-comment -std=c++11 -pedantic-errors -O3
+LIBS      = -Llib -lpng -lpoly34 -ltinyobjloader -lyaml-cpp
 
 MODULES   = geometries nodes .
 SRC_DIR   = $(addprefix src/, $(MODULES))
