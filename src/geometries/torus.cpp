@@ -10,7 +10,7 @@
 #include "torus.h"
 #include <algorithm>
 
-torus::torus(double rad, double tube_rad) : _rad(rad), _tube_rad(tube_rad){};
+torus::torus(double rad, double tube_rad) : _rad(rad), _tube_rad(tube_rad) {}
 
 geometry::ray_path torus::intersect(ray ray) const {
   double alpha = glm::dot(ray.dir, ray.dir);

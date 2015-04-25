@@ -10,7 +10,7 @@
 
 csg_difference::csg_difference(std::unique_ptr<node> &&lhs,
                                std::unique_ptr<node> &&rhs)
-    : _lhs(std::move(lhs)), _rhs(std::move(rhs)){};
+    : _lhs(std::move(lhs)), _rhs(std::move(rhs)) {}
 
 geometry::ray_path csg_difference::intersect(ray ray) const {
   auto lhs = _lhs->intersect(ray);

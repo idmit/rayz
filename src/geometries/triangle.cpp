@@ -8,7 +8,7 @@
 
 #include "triangle.h"
 
-triangle::triangle(std::array<dvec3, 3> vertices) : _vertices(vertices){};
+triangle::triangle(std::array<dvec3, 3> vertices) : _vertices(vertices) {}
 
 geometry::ray_path triangle::intersect(ray ray) const {
   dvec3 n = glm::normalize(

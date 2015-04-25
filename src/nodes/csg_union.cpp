@@ -9,7 +9,7 @@
 #include "csg_union.h"
 
 csg_union::csg_union(std::unique_ptr<node> &&lhs, std::unique_ptr<node> &&rhs)
-    : _lhs(std::move(lhs)), _rhs(std::move(rhs)){};
+    : _lhs(std::move(lhs)), _rhs(std::move(rhs)) {}
 
 geometry::ray_path csg_union::intersect(ray ray) const {
   auto list = _lhs->intersect(ray);

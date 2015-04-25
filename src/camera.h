@@ -20,8 +20,8 @@ public:
   camera(dvec3 pos, double fov_x, double fov_y, double heading, double pitch,
          double roll);
 
-  png::image<png::rgba_pixel_16> render(const scene& scene, unsigned long resX,
-                                        unsigned long resY);
+  png::image<png::rgba_pixel_16> render(const scene& scene, long resX,
+                                        long resY);
 
 private:
   dvec3 _eye;

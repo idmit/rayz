@@ -10,7 +10,7 @@
 
 csg_intersection::csg_intersection(std::unique_ptr<node> &&lhs,
                                    std::unique_ptr<node> &&rhs)
-    : _lhs(std::move(lhs)), _rhs(std::move(rhs)){};
+    : _lhs(std::move(lhs)), _rhs(std::move(rhs)) {}
 
 geometry::ray_path csg_intersection::intersect(ray ray) const {
   auto list = _lhs->intersect(ray);

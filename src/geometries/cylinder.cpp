@@ -10,7 +10,7 @@
 
 #include <algorithm>
 
-cylinder::cylinder(double rad, double height) : _rad(rad), _height(height){};
+cylinder::cylinder(double rad, double height) : _rad(rad), _height(height) {}
 
 cylinder::ray_path cylinder::intersect(ray ray) const {
 

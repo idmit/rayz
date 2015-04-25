@@ -38,9 +38,8 @@ camera::camera(dvec3 pos, double fovx, double fovy, double heading,
   _lookat = _eye - _w * dist;
 }
 
-png::image<png::rgba_pixel_16> camera::render(const scene &scene,
-                                              unsigned long resX,
-                                              unsigned long resY) {
+png::image<png::rgba_pixel_16> camera::render(const scene &scene, long resX,
+                                              long resY) {
   png::image<png::rgba_pixel_16> img(resX, resY);
   std::vector<std::vector<double> > closest_points(
       resY, std::vector<double>(resX, -1));
@@ -61,7 +60,7 @@ png::image<png::rgba_pixel_16> camera::render(const scene &scene,
         world_ray.dir = glm::normalize(x * _u + y * _v - _dist * _w);
 
         if (i == resX / 2 && j == resY / 2) {
-          printf("");
+          printf("%s", "");
         }
 
         glm::dvec3 closest_point;

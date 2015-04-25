@@ -29,7 +29,7 @@ geometry::ray_path transform(dmat4 t, ray pr, ray lr, geometry::ray_path list) {
 dvec3 transform(dmat4 t, dvec3 v) { return dvec3(t * glm::dvec4(v, 1)); }
 
 plain_node::plain_node(std::unique_ptr<geometry> &&geom)
-    : _geom(std::move(geom)){};
+    : _geom(std::move(geom)) {}
 
 geometry::ray_path plain_node::intersect(ray parent_ray) const {
   dmat4 to_parent_transform = _lcs;
