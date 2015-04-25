@@ -19,11 +19,11 @@ geometry::ray_path csg_difference::intersect(ray ray) const {
   std::list<std::tuple<double, bool, geometry::mode> > list;
 
   for (const auto &pair : lhs) {
-    list.push_back({ pair.first, false, pair.second });
+    list.emplace_back(pair.first, false, pair.second);
   }
 
   for (const auto &pair : rhs) {
-    list.push_back({ pair.first, true, pair.second });
+    list.emplace_back(pair.first, true, pair.second);
   }
 
   list.sort();
