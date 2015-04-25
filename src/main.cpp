@@ -29,15 +29,16 @@ int main(int argc, const char* argv[]) {
   auto cam(scene::create(scene_desc, &s));
 
   if (!cam) {
+    printf("%s\n", "There are some errors in your config file.");
     return 1;
   }
 
   cam->render(s, resx, resy).write(output_img);
 
-  std::vector<tinyobj::shape_t> shapes;
-  std::vector<tinyobj::material_t> materials;
-
-  tinyobj::LoadObj(shapes, materials, "bunny.obj");
+  //  std::vector<tinyobj::shape_t> shapes;
+  //  std::vector<tinyobj::material_t> materials;
+  //
+  //  tinyobj::LoadObj(shapes, materials, "bunny.obj");
 
   return 0;
 }

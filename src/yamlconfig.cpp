@@ -24,23 +24,16 @@ std::unique_ptr<T> make_unique(Args &&... args) {
 dmat4 parse_lcs(YAML::Node lcs_config);
 
 std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
-  YAML::Node ymlnode;
   std::unique_ptr<node> parsed_node = nullptr;
   std::unique_ptr<geometry> geom = nullptr;
 
-  if ((ymlnode = node_config[1]["triangle"])) {
-    geom = parse_triangle(ymlnode);
-  } else if ((ymlnode = node_config[1]["cylinder"])) {
-    geom = parse_cylinder(ymlnode);
-  } else if ((ymlnode = node_config[1]["torus"])) {
-    geom = parse_torus(ymlnode);
-  } else if ((ymlnode = node_config[1]["sphere"])) {
-    geom = parse_sphere(ymlnode);
-  };
+  geom || (geom = parse_triangle(node_config[1]["triangle"]));
+  geom || (geom = parse_cylinder(node_config[1]["cylinder"]));
+  geom || (geom = parse_cone(node_config[1]["cone"]));
+  geom || (geom = parse_torus(node_config[1]["torus"]));
+  geom || (geom = parse_sphere(node_config[1]["sphere"]));
 
-  if (geom) {
-    parsed_node = make_unique<plain_node>(std::move(geom));
-  }
+  !geom || (parsed_node = make_unique<plain_node>(std::move(geom)));
 
   if (parsed_node) {
     parsed_node->set_lcs(parse_lcs(node_config[0]["lcs"]));
@@ -56,6 +49,10 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
 }
 
 std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
+  if (!triangle_config) {
+    return nullptr;
+  }
+
   std::unique_ptr<triangle> parsed_node = nullptr;
   std::array<dvec3, 3> args;
   std::array<std::string, 3> keys = { "p0", "p1", "p2" };
@@ -75,6 +72,10 @@ std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
 }
 
 std::unique_ptr<cylinder> parse_cylinder(YAML::Node cylinder_config) {
+  if (!cylinder_config) {
+    return nullptr;
+  }
+
   if (!cylinder_config["radius"] || !cylinder_config["height"]) {
     return nullptr;
   }
@@ -83,7 +84,26 @@ std::unique_ptr<cylinder> parse_cylinder(YAML::Node cylinder_config) {
                                cylinder_config["height"].as<double>());
 }
 
+std::unique_ptr<cone> parse_cone(YAML::Node cone_config) {
+  if (!cone_config) {
+    return nullptr;
+  }
+
+  if (!cone_config["bottom_radius"] || !cone_config["top_radius"] ||
+      !cone_config["height"]) {
+    return nullptr;
+  }
+
+  return make_unique<cone>(cone_config["bottom_radius"].as<double>(),
+                           cone_config["top_radius"].as<double>(),
+                           cone_config["height"].as<double>());
+}
+
 std::unique_ptr<torus> parse_torus(YAML::Node torus_config) {
+  if (!torus_config) {
+    return nullptr;
+  }
+
   if (!torus_config["radius"] || !torus_config["tube_radius"]) {
     return nullptr;
   }
@@ -93,6 +113,10 @@ std::unique_ptr<torus> parse_torus(YAML::Node torus_config) {
 }
 
 std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
+  if (!sphere_config) {
+    return nullptr;
+  }
+
   if (!sphere_config["radius"]) {
     return nullptr;
   }
@@ -105,11 +129,7 @@ std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config) {
     return nullptr;
   }
 
-  if (!csg_config["left_node"]) {
-    return nullptr;
-  }
-
-  if (!csg_config["right_node"]) {
+  if (!csg_config["left_node"] || !csg_config["right_node"]) {
     return nullptr;
   }
 
@@ -123,11 +143,7 @@ std::unique_ptr<node> parse_csg_union(YAML::Node csg_config) {
     return nullptr;
   }
 
-  if (!csg_config["left_node"]) {
-    return nullptr;
-  }
-
-  if (!csg_config["right_node"]) {
+  if (!csg_config["left_node"] || !csg_config["right_node"]) {
     return nullptr;
   }
 
@@ -141,11 +157,7 @@ std::unique_ptr<node> parse_csg_difference(YAML::Node csg_config) {
     return nullptr;
   }
 
-  if (!csg_config["left_node"]) {
-    return nullptr;
-  }
-
-  if (!csg_config["right_node"]) {
+  if (!csg_config["left_node"] || !csg_config["right_node"]) {
     return nullptr;
   }
 

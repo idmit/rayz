@@ -16,6 +16,7 @@
 
 #include "geometries/triangle.h"
 #include "geometries/cylinder.h"
+#include "geometries/cone.h"
 #include "geometries/torus.h"
 #include "geometries/sphere.h"
 
@@ -26,6 +27,7 @@ std::unique_ptr<node> parse_csg_difference(YAML::Node csg_config);
 std::unique_ptr<node> parse_node(YAML::Node node_config);
 std::unique_ptr<triangle> parse_triangle(YAML::Node node_config);
 std::unique_ptr<cylinder> parse_cylinder(YAML::Node cylinder_config);
+std::unique_ptr<cone> parse_cone(YAML::Node cone_config);
 std::unique_ptr<torus> parse_torus(YAML::Node torus_config);
 std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config);
 
