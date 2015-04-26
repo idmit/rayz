@@ -13,6 +13,7 @@
 
 #include <vector>
 #include "triangle.h"
+#include "box.h"
 
 class obj : public geometry {
 public:
@@ -23,7 +24,7 @@ public:
 
 private:
   std::vector<triangle> _triangles;
-  vec3 _min, _max;
+  box _box;
 };
 
 #endif /* defined(__rayz__obj__) */
