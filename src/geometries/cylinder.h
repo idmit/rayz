@@ -13,13 +13,13 @@
 
 class cylinder : public geometry {
 public:
-  cylinder(double rad, double height);
+  cylinder(num_t rad, num_t height);
   virtual ray_path intersect(ray ray) const override;
-  virtual double get_color(dvec3 point) const override;
-  virtual dvec3 get_normal(dvec3 point) const override;
+  virtual num_t get_color(vec3 point) const override;
+  virtual vec3 get_normal(vec3 point) const override;
 
 private:
-  double _rad, _height;
+  num_t _rad, _height;
 };
 
 #endif /* defined(__rayz__cylinder__) */

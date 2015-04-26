@@ -8,13 +8,13 @@
 
 #include "sphere.h"
 
-sphere::sphere(double rad) : _rad(rad) {}
+sphere::sphere(num_t rad) : _rad(rad) {}
 
 geometry::ray_path sphere::intersect(ray ray) const {
-  double b = glm::dot(ray.origin, ray.dir);
-  double c = glm::dot(ray.origin, ray.origin) - _rad * _rad;
+  num_t b = glm::dot(ray.origin, ray.dir);
+  num_t c = glm::dot(ray.origin, ray.origin) - _rad * _rad;
 
-  double d = b * b - c;
+  num_t d = b * b - c;
 
   ray_path list;
 
@@ -22,9 +22,9 @@ geometry::ray_path sphere::intersect(ray ray) const {
     return list;
   }
 
-  double e = glm::sqrt(d);
+  num_t e = glm::sqrt(d);
 
-  double t = (-b - e);
+  num_t t = (-b - e);
   if (t > 0) {
     list.push_back({ t, geometry::IN });
   }
@@ -37,6 +37,6 @@ geometry::ray_path sphere::intersect(ray ray) const {
   return list;
 }
 
-double sphere::get_color(dvec3 point) const { return 0; }
+num_t sphere::get_color(vec3 point) const { return 0; }
 
-dvec3 sphere::get_normal(dvec3 point) const { return glm::normalize(point); }
+vec3 sphere::get_normal(vec3 point) const { return glm::normalize(point); }

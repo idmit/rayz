@@ -13,13 +13,13 @@
 
 class cone : public geometry {
 public:
-  cone(double bottom_rad, double top_rad, double height);
+  cone(num_t bottom_rad, num_t top_rad, num_t height);
   virtual ray_path intersect(ray ray) const override;
-  virtual double get_color(dvec3 point) const override;
-  virtual dvec3 get_normal(dvec3 point) const override;
+  virtual num_t get_color(vec3 point) const override;
+  virtual vec3 get_normal(vec3 point) const override;
 
 private:
-  double _bottom_rad, _top_rad, _height;
+  num_t _bottom_rad, _top_rad, _height;
 };
 
 #endif /* defined(__rayz__cone__) */

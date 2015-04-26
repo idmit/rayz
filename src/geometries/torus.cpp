@@ -10,24 +10,24 @@
 #include "torus.h"
 #include <algorithm>
 
-torus::torus(double rad, double tube_rad) : _rad(rad), _tube_rad(tube_rad) {}
+torus::torus(num_t rad, num_t tube_rad) : _rad(rad), _tube_rad(tube_rad) {}
 
 geometry::ray_path torus::intersect(ray ray) const {
-  double alpha = glm::dot(ray.dir, ray.dir);
-  double beta = 2 * glm::dot(ray.origin, ray.dir);
-  double gamma =
+  num_t alpha = glm::dot(ray.dir, ray.dir);
+  num_t beta = 2 * glm::dot(ray.origin, ray.dir);
+  num_t gamma =
       glm::dot(ray.origin, ray.origin) - _tube_rad * _tube_rad - _rad * _rad;
 
-  double a4 = alpha * alpha;
-  double a3 = 2 * alpha * beta;
-  double a2 =
+  num_t a4 = alpha * alpha;
+  num_t a3 = 2 * alpha * beta;
+  num_t a2 =
       beta * beta + 2 * alpha * gamma + 4 * _rad * _rad * ray.dir.z * ray.dir.z;
-  double a1 = 2 * beta * gamma + 8 * _rad * _rad * ray.origin.z * ray.dir.z;
-  double a0 =
+  num_t a1 = 2 * beta * gamma + 8 * _rad * _rad * ray.origin.z * ray.dir.z;
+  num_t a0 =
       gamma * gamma +
       4 * _rad * _rad * (ray.origin.z * ray.origin.z - _tube_rad * _tube_rad);
 
-  double x[4];
+  num_t x[4];
   int num = SolveP4(x, a3 / a4, a2 / a4, a1 / a4, a0 / a4);
 
   ray_path list;
@@ -53,6 +53,6 @@ geometry::ray_path torus::intersect(ray ray) const {
   return list;
 }
 
-double torus::get_color(dvec3 point) const { return 0; }
+num_t torus::get_color(vec3 point) const { return 0; }
 
-dvec3 torus::get_normal(dvec3 point) const { return { 0, 0, 0 }; }
+vec3 torus::get_normal(vec3 point) const { return { 0, 0, 0 }; }

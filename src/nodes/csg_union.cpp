@@ -47,6 +47,6 @@ geometry::ray_path csg_union::intersect(ray ray) const {
   return out_list;
 }
 
-double csg_union::get_color(dvec3 intersectionPoint) const { return 0; }
+num_t csg_union::get_color(vec3 intersectionPoint) const { return 0; }
 
-dvec3 csg_union::get_normal(dvec3 point) const { return { 0, 0, 0 }; }
+vec3 csg_union::get_normal(vec3 point) const { return { 0, 0, 0 }; }

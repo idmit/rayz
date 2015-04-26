@@ -22,7 +22,7 @@ obj::obj(const char *filename) {
 
   for (size_t i = 0; i < shapes.size(); ++i) {
     for (size_t f = 0; f < shapes[i].mesh.indices.size() / 3; ++f) {
-      std::array<dvec3, 3> triplet;
+      std::array<vec3, 3> triplet;
       for (int k = 0; k < 3; ++k) {
         size_t idx = 3 * f + k;
 
@@ -54,6 +54,6 @@ geometry::ray_path obj::intersect(ray ray) const {
   return list;
 }
 
-double obj::get_color(dvec3 point) const { return 0; }
+num_t obj::get_color(vec3 point) const { return 0; }
 
-dvec3 obj::get_normal(dvec3 point) const { return glm::normalize(point); }
+vec3 obj::get_normal(vec3 point) const { return glm::normalize(point); }

@@ -16,7 +16,7 @@ geometry::ray_path csg_difference::intersect(ray ray) const {
   auto lhs = _lhs->intersect(ray);
   auto rhs = _rhs->intersect(ray);
 
-  std::list<std::tuple<double, bool, geometry::mode> > list;
+  std::list<std::tuple<num_t, bool, geometry::mode> > list;
 
   for (const auto &pair : lhs) {
     list.emplace_back(pair.first, false, pair.second);
@@ -67,6 +67,6 @@ geometry::ray_path csg_difference::intersect(ray ray) const {
   return out_list;
 }
 
-double csg_difference::get_color(dvec3 intersectionPoint) const { return 0; }
+num_t csg_difference::get_color(vec3 intersectionPoint) const { return 0; }
 
-dvec3 csg_difference::get_normal(dvec3 point) const { return { 0, 0, 0 }; }
+vec3 csg_difference::get_normal(vec3 point) const { return { 0, 0, 0 }; }

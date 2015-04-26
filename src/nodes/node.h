@@ -18,16 +18,16 @@ public:
   void add_child(std::unique_ptr<node> &&child);
 
   virtual geometry::ray_path intersect(ray ray) const = 0;
-  virtual double get_color(dvec3 point) const = 0;
-  virtual dvec3 get_normal(dvec3 point) const = 0;
+  virtual num_t get_color(vec3 point) const = 0;
+  virtual vec3 get_normal(vec3 point) const = 0;
 
   std::vector<const node *> children() const;
 
-  void set_lcs(const dmat4 &lcs);
-  dmat4 get_lcs() const;
+  void set_lcs(const mat4 &lcs);
+  mat4 get_lcs() const;
 
 protected:
-  dmat4 _lcs;
+  mat4 _lcs;
   std::vector<std::unique_ptr<node> > _children;
 };
 

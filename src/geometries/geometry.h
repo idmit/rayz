@@ -17,11 +17,11 @@ class geometry {
 public:
   enum mode { IN, OUT };
 
-  using ray_path = std::list<std::pair<double, geometry::mode> >;
+  using ray_path = std::list<std::pair<num_t, geometry::mode> >;
 
   virtual ray_path intersect(ray ray) const = 0;
-  virtual double get_color(dvec3 point) const = 0;
-  virtual dvec3 get_normal(dvec3 point) const = 0;
+  virtual num_t get_color(vec3 point) const = 0;
+  virtual vec3 get_normal(vec3 point) const = 0;
   virtual ~geometry(){};
 };
 

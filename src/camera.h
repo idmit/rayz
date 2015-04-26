@@ -16,24 +16,24 @@ class scene;
 
 class camera {
 public:
-  camera(dvec3 pos, double fov_x, double fov_y, dvec3 lookat);
-  camera(dvec3 pos, double fov_x, double fov_y, double heading, double pitch,
-         double roll);
+  camera(vec3 pos, num_t fov_x, num_t fov_y, vec3 lookat);
+  camera(vec3 pos, num_t fov_x, num_t fov_y, num_t heading, num_t pitch,
+         num_t roll);
 
   png::image<png::rgba_pixel_16> render(const scene& scene, long resX,
                                         long resY);
 
 private:
-  dvec3 _eye;
-  dvec3 _lookat;
-  dvec3 _up;
+  vec3 _eye;
+  vec3 _lookat;
+  vec3 _up;
 
-  dvec3 _w;
-  dvec3 _u;
-  dvec3 _v;
+  vec3 _w;
+  vec3 _u;
+  vec3 _v;
 
-  double _dist;
-  double _fovx, _fovy;
+  num_t _dist;
+  num_t _fovx, _fovy;
 };
 
 #endif /* defined(__rayz__camera__) */

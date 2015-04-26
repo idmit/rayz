@@ -9,19 +9,19 @@
 #include <algorithm>
 #include "cone.h"
 
-cone::cone(double bottom_rad, double top_rad, double height)
+cone::cone(num_t bottom_rad, num_t top_rad, num_t height)
     : _bottom_rad(bottom_rad), _top_rad(top_rad), _height(height) {}
 
 geometry::ray_path cone::intersect(ray ray) const {
-  double ts[4] = { INFINITY, INFINITY, INFINITY, INFINITY };
+  num_t ts[4] = { INFINITY, INFINITY, INFINITY, INFINITY };
 
-  //  dvec3 n({ 0, 0, 1 });
-  //  dvec3 disk_centers[] = { { 0, 0, _height / 2 }, { 0, 0, -_height / 2 } };
+  //  vec3 n({ 0, 0, 1 });
+  //  vec3 disk_centers[] = { { 0, 0, _height / 2 }, { 0, 0, -_height / 2 } };
   //
   //  for (unsigned i = 0; i < 2; ++i) {
-  //    double t =
+  //    num_t t =
   //        -glm::dot((ray.origin - disk_centers[i]), n) / glm::dot(ray.dir, n);
-  //    dvec3 plane_intersection = ray.origin + ray.dir * t;
+  //    vec3 plane_intersection = ray.origin + ray.dir * t;
   //    if (glm::dot(plane_intersection - disk_centers[i],
   //                 plane_intersection - disk_centers[i]) <= _rad * _rad) {
   //      ts[i] = t;
@@ -29,18 +29,18 @@ geometry::ray_path cone::intersect(ray ray) const {
   //  }
 
   glm::dvec2 origin(ray.origin), dir(ray.dir);
-  double a = glm::dot(dir, dir) - ray.dir.z * ray.dir.z;
-  double b = glm::dot(origin, dir) - 2 * ray.origin.z * ray.dir.z;
-  double c = glm::dot(origin, origin) - ray.origin.z * ray.origin.z;
+  num_t a = glm::dot(dir, dir) - ray.dir.z * ray.dir.z;
+  num_t b = glm::dot(origin, dir) - 2 * ray.origin.z * ray.dir.z;
+  num_t c = glm::dot(origin, origin) - ray.origin.z * ray.origin.z;
 
-  double d = b * b - a * c;
+  num_t d = b * b - a * c;
   if (d >= 0) {
-    double e = glm::sqrt(d);
+    num_t e = glm::sqrt(d);
 
-    double t = (-b - e) / a;
+    num_t t = (-b - e) / a;
     for (unsigned i = 0; i < 2; ++i) {
       if (t > 0) {
-        dvec3 side_intersection = ray.origin + ray.dir * t;
+        vec3 side_intersection = ray.origin + ray.dir * t;
         if (-_height / 2 <= side_intersection.z &&
             side_intersection.z <= _height / 2) {
           ts[2 + i] = t;
@@ -64,6 +64,6 @@ geometry::ray_path cone::intersect(ray ray) const {
   return list;
 }
 
-double cone::get_color(dvec3 point) const { return 0; }
+num_t cone::get_color(vec3 point) const { return 0; }
 
-dvec3 cone::get_normal(dvec3 point) const { return { 0, 0, 0 }; }
+vec3 cone::get_normal(vec3 point) const { return { 0, 0, 0 }; }

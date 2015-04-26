@@ -21,6 +21,6 @@ std::vector<const node *> node::children() const {
   return children;
 }
 
-void node::set_lcs(const dmat4 &lcs) { _lcs = lcs; }
+void node::set_lcs(const mat4 &lcs) { _lcs = lcs; }
 
-dmat4 node::get_lcs() const { return _lcs; }
+mat4 node::get_lcs() const { return _lcs; }

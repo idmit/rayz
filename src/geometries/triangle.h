@@ -14,13 +14,13 @@
 
 class triangle : public geometry {
 public:
-  triangle(std::array<dvec3, 3> vertices);
+  triangle(std::array<vec3, 3> vertices);
   virtual ray_path intersect(ray ray) const override;
-  virtual double get_color(dvec3 point) const override;
-  virtual dvec3 get_normal(dvec3 point) const override;
+  virtual num_t get_color(vec3 point) const override;
+  virtual vec3 get_normal(vec3 point) const override;
 
 private:
-  std::array<dvec3, 3> _vertices;
+  std::array<vec3, 3> _vertices;
 };
 
 #endif /* defined(__rayz__triangle__) */

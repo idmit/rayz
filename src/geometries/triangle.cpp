@@ -8,16 +8,16 @@
 
 #include "triangle.h"
 
-triangle::triangle(std::array<dvec3, 3> vertices) : _vertices(vertices) {}
+triangle::triangle(std::array<vec3, 3> vertices) : _vertices(vertices) {}
 
 geometry::ray_path triangle::intersect(ray ray) const {
-  dvec3 n = glm::normalize(
+  vec3 n = glm::normalize(
       glm::cross((_vertices[1] - _vertices[0]), _vertices[2] - _vertices[0]));
-  double t = -glm::dot((ray.origin - _vertices[0]), n) / glm::dot(ray.dir, n);
+  num_t t = -glm::dot((ray.origin - _vertices[0]), n) / glm::dot(ray.dir, n);
 
   ray_path list;
 
-  dvec3 intersection_point = ray.origin + ray.dir * t;
+  vec3 intersection_point = ray.origin + ray.dir * t;
 
   if (glm::dot(glm::cross(_vertices[1] - _vertices[0],
                           intersection_point - _vertices[0]),
@@ -41,9 +41,9 @@ geometry::ray_path triangle::intersect(ray ray) const {
   return list;
 }
 
-double triangle::get_color(dvec3 point) const { return 0; }
+num_t triangle::get_color(vec3 point) const { return 0; }
 
-dvec3 triangle::get_normal(dvec3 point) const {
+vec3 triangle::get_normal(vec3 point) const {
   return glm::normalize(
       glm::cross((_vertices[1] - _vertices[0]), _vertices[2] - _vertices[0]));
 }

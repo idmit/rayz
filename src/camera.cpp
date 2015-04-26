@@ -9,7 +9,7 @@
 #include "camera.h"
 #include "glm/gtx/rotate_vector.hpp"
 
-camera::camera(dvec3 pos, double fovx, double fovy, dvec3 lookat)
+camera::camera(vec3 pos, num_t fovx, num_t fovy, vec3 lookat)
     : _eye(pos),
       _lookat(lookat),
       _up({ 0, 0, 1 }),
@@ -20,11 +20,11 @@ camera::camera(dvec3 pos, double fovx, double fovy, dvec3 lookat)
       _fovx(fovx),
       _fovy(fovy) {}
 
-camera::camera(dvec3 pos, double fovx, double fovy, double heading,
-               double pitch, double roll)
-    : camera(pos, fovx, fovy, pos + dvec3(0, 1, 0)) {
+camera::camera(vec3 pos, num_t fovx, num_t fovy, num_t heading, num_t pitch,
+               num_t roll)
+    : camera(pos, fovx, fovy, pos + vec3(0, 1, 0)) {
 
-  double dist = glm::distance(_lookat, _eye);
+  num_t dist = glm::distance(_lookat, _eye);
 
   _w = glm::rotate(_w, -glm::radians(heading), _v);
   _u = glm::rotate(_u, -glm::radians(heading), _v);
@@ -41,16 +41,16 @@ camera::camera(dvec3 pos, double fovx, double fovy, double heading,
 png::image<png::rgba_pixel_16> camera::render(const scene &scene, long resX,
                                               long resY) {
   png::image<png::rgba_pixel_16> img(resX, resY);
-  std::vector<std::vector<double> > closest_points(
-      resY, std::vector<double>(resX, -1));
+  std::vector<std::vector<num_t> > closest_points(resY,
+                                                  std::vector<num_t>(resX, -1));
 
-  double pxw = 2 * _dist * glm::tan(glm::radians(_fovx / 2)) / resX;
-  double pxh = 2 * _dist * glm::tan(glm::radians(_fovy / 2)) / resY;
+  num_t pxw = 2 * _dist * glm::tan(glm::radians(_fovx / 2)) / resX;
+  num_t pxh = 2 * _dist * glm::tan(glm::radians(_fovy / 2)) / resY;
 
-  double max_intensity = 0;
+  num_t max_intensity = 0;
 
-  double x = -(resX * pxw / 2);
-  double y = -(resY * pxh / 2);
+  num_t x = -(resX * pxw / 2);
+  num_t y = -(resY * pxh / 2);
 
   for (long i = resY - 1; i >= 0; --i) {
     for (long j = 0; j < resX; ++j) {
@@ -63,7 +63,7 @@ png::image<png::rgba_pixel_16> camera::render(const scene &scene, long resX,
           printf("%s", "");
         }
 
-        glm::dvec3 closest_point;
+        vec3 closest_point;
         auto intersected = node->intersect(world_ray);
         if (!intersected.empty()) {
           closest_point =
@@ -83,7 +83,7 @@ png::image<png::rgba_pixel_16> camera::render(const scene &scene, long resX,
   for (long i = 0; i < resY; ++i) {
     for (long j = 0; j < resX; ++j) {
       if (closest_points[i][j] >= 0) {
-        double intensity = closest_points[i][j] / (2 * max_intensity);
+        num_t intensity = closest_points[i][j] / (2 * max_intensity);
         uint16_t val = 0xFFFF - intensity * 0xFFFF;
         img.set_pixel(j, i, { val, val, val, 0xFFFF });
       } else {
