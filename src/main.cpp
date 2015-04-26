@@ -11,7 +11,7 @@
 
 #include "scene.h"
 
-#include "tinyobjloader/tiny_obj_loader.h"
+#include "geometries/obj.h"
 
 int main(int argc, const char* argv[]) {
 
@@ -35,10 +35,7 @@ int main(int argc, const char* argv[]) {
 
   cam->render(s, resx, resy).write(output_img);
 
-  //  std::vector<tinyobj::shape_t> shapes;
-  //  std::vector<tinyobj::material_t> materials;
-  //
-  //  tinyobj::LoadObj(shapes, materials, "bunny.obj");
+  obj o("bunny.obj");
 
   return 0;
 }

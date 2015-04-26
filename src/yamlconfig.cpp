@@ -32,6 +32,7 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
   geom || (geom = parse_cone(node_config[1]["cone"]));
   geom || (geom = parse_torus(node_config[1]["torus"]));
   geom || (geom = parse_sphere(node_config[1]["sphere"]));
+  geom || (geom = parse_obj(node_config[1]["obj_model"]));
 
   !geom || (parsed_node = make_unique<plain_node>(std::move(geom)));
 
@@ -46,6 +47,18 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
   }
 
   return parsed_node;
+}
+
+std::unique_ptr<obj> parse_obj(YAML::Node obj_config) {
+  if (!obj_config) {
+    return nullptr;
+  }
+
+  if (!obj_config["file_name"]) {
+    return nullptr;
+  }
+
+  return make_unique<obj>(obj_config["file_name"].as<std::string>().c_str());
 }
 
 std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
