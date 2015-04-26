@@ -33,6 +33,7 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
   geom || (geom = parse_torus(node_config[1]["torus"]));
   geom || (geom = parse_sphere(node_config[1]["sphere"]));
   geom || (geom = parse_obj(node_config[1]["obj_model"]));
+  geom || (geom = parse_box(node_config[1]["box"]));
 
   !geom || (parsed_node = make_unique<plain_node>(std::move(geom)));
 
@@ -59,6 +60,26 @@ std::unique_ptr<obj> parse_obj(YAML::Node obj_config) {
   }
 
   return make_unique<obj>(obj_config["file_name"].as<std::string>().c_str());
+}
+
+std::unique_ptr<box> parse_box(YAML::Node box_config) {
+  if (!box_config) {
+    return nullptr;
+  }
+
+  if (!box_config["min"] || !box_config["max"]) {
+    return nullptr;
+  }
+
+  vec3 min(box_config["min"]["x"].as<num_t>(),
+           box_config["min"]["y"].as<num_t>(),
+           box_config["min"]["z"].as<num_t>());
+
+  vec3 max(box_config["max"]["x"].as<num_t>(),
+           box_config["max"]["y"].as<num_t>(),
+           box_config["max"]["z"].as<num_t>());
+
+  return make_unique<box>(min, max);
 }
 
 std::unique_ptr<triangle> parse_triangle(YAML::Node triangle_config) {
