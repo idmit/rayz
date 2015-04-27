@@ -34,6 +34,7 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
   geom || (geom = parse_sphere(node_config[1]["sphere"]));
   geom || (geom = parse_obj(node_config[1]["obj_model"]));
   geom || (geom = parse_box(node_config[1]["box"]));
+  geom || (geom = parse_plane(node_config[1]["plane"]));
 
   !geom || (parsed_node = make_unique<plain_node>(std::move(geom)));
 
@@ -156,6 +157,22 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config) {
   }
 
   return make_unique<sphere>(sphere_config["radius"].as<num_t>());
+}
+
+std::unique_ptr<plane> parse_plane(YAML::Node plane_config) {
+  if (!plane_config) {
+    return nullptr;
+  }
+
+  //  if (!plane_config["point"]) {
+  //    return nullptr;
+  //  }
+
+  //  vec3 point(plane_config["point"]["x"].as<num_t>(),
+  //             plane_config["point"]["y"].as<num_t>(),
+  //             plane_config["point"]["z"].as<num_t>());
+
+  return make_unique<plane>();
 }
 
 std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config) {

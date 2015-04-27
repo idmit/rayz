@@ -10,6 +10,7 @@
 #define __rayz__types__
 
 #include "glm/glm.hpp"
+#include "glm/gtc/constants.hpp"
 
 using num_t = double;
 using vec3 = glm::tvec3<num_t>;

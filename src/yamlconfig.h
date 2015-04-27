@@ -21,6 +21,7 @@
 #include "geometries/obj.h"
 #include "geometries/sphere.h"
 #include "geometries/box.h"
+#include "geometries/plane.h"
 
 std::unique_ptr<node> parse_plain_node(YAML::Node node_config);
 std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config);
@@ -35,6 +36,7 @@ std::unique_ptr<torus> parse_torus(YAML::Node torus_config);
 std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config);
 std::unique_ptr<obj> parse_obj(YAML::Node obj_config);
 std::unique_ptr<box> parse_box(YAML::Node box_config);
+std::unique_ptr<plane> parse_plane(YAML::Node plane_config);
 
 std::unique_ptr<camera> parse_camera(YAML::Node camera_config);
 
