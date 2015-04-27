@@ -238,8 +238,8 @@ mat4 parse_lcs(YAML::Node lcs_config) {
   s.y = lcs_config["sy"].as<num_t>();
   s.z = lcs_config["sz"].as<num_t>();
 
-  lcs =
-      glm::scale(glm::translate(lcs, t), s) * glm::eulerAngleYXZ(r.x, r.y, r.z);
+  lcs = glm::translate(lcs, t) * glm::eulerAngleYXZ(r.x, r.y, r.z) *
+        glm::scale(lcs, s);
 
   return lcs;
 }
