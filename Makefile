@@ -31,12 +31,15 @@ endef
 
 .PHONY: all checkdirs clean
 
-all: checkdirs $(TARGET)
+all: bindir builddirs $(TARGET)
 
 $(TARGET): $(OBJ)
 	$(LD) $(LIBS) $^ -o $(BIN_DIR)/$@
 
-checkdirs: $(BUILD_DIR)
+bindir:
+	mkdir -p $(BIN_DIR)
+
+builddirs: $(BUILD_DIR)
 
 $(BUILD_DIR):
 	mkdir -p $@

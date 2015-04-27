@@ -35,7 +35,5 @@ int main(int argc, const char* argv[]) {
 
   cam->render(s, resx, resy).write(output_img);
 
-  obj o("bunny.obj");
-
   return 0;
 }
