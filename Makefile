@@ -1,7 +1,7 @@
 CXX       = g++
 LD        = g++
 
-CFLAGS    = -g -Wall -Wno-comment -std=c++11 -pedantic-errors -O3
+CFLAGS    = -Wall -Wno-comment -std=c++11 -pedantic-errors
 LIBS      = -Llib -lpng -lpoly34 -ltinyobjloader -lyaml-cpp
 
 MODULES   = geometries nodes .
@@ -14,6 +14,13 @@ OBJ       = $(patsubst src/%.cpp, build/%.o, $(SRC))
 INCLUDES  = $(addprefix -I, $(SRC_DIR)) -Iinclude
 
 TARGET    = rayz
+
+DEBUG     ?= 0
+ifeq ($(DEBUG), 1)
+	CFLAGS += -g3 -DDEBUG
+else
+	CFLAGS += -O3
+endif
 
 vpath %.cpp $(SRC_DIR)
 
