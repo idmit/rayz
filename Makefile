@@ -34,7 +34,7 @@ endef
 all: bindir builddirs $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(LD) $(LIBS) $^ -o $(BIN_DIR)/$@
+	$(LD) $^ -o $(BIN_DIR)/$@ $(LIBS)
 
 bindir:
 	mkdir -p $(BIN_DIR)
