@@ -38,9 +38,8 @@ camera::camera(vec3 pos, num_t fovx, num_t fovy, num_t heading, num_t pitch,
   _lookat = _eye - _w * dist;
 }
 
-png::image<png::rgba_pixel_16> camera::render(const scene &scene, long resX,
-                                              long resY) {
-  png::image<png::rgba_pixel_16> img(resX, resY);
+bitmap_image camera::render(const scene &scene, long resX, long resY) {
+  bitmap_image img(resX, resY);
   std::vector<std::vector<num_t> > closest_points(resY,
                                                   std::vector<num_t>(resX, -1));
 
@@ -84,10 +83,10 @@ png::image<png::rgba_pixel_16> camera::render(const scene &scene, long resX,
     for (long j = 0; j < resX; ++j) {
       if (closest_points[i][j] >= 0) {
         num_t intensity = closest_points[i][j] / (2 * max_intensity);
-        uint16_t val = 0xFFFF - intensity * 0xFFFF;
-        img.set_pixel(j, i, { val, val, val, 0xFFFF });
+        unsigned char val = 0xFF - intensity * 0xFF;
+        img.set_pixel(j, i, val, val, val);
       } else {
-        img.set_pixel(j, i, { 0, 0, 0, 0 });
+        img.set_pixel(j, i, 0, 0, 0);
       }
     }
   }

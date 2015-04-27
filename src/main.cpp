@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Ivan Dmitrievsky. All rights reserved.
 //
 
-#include "png++/png.hpp"
 #include "opts.h"
 
 #include "scene.h"
@@ -33,7 +32,7 @@ int main(int argc, const char* argv[]) {
     return 1;
   }
 
-  cam->render(s, resx, resy).write(output_img);
+  cam->render(s, resx, resy).save_image(output_img);
 
   return 0;
 }

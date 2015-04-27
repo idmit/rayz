@@ -9,7 +9,7 @@
 #ifndef __rayz__camera__
 #define __rayz__camera__
 
-#include "png++/png.hpp"
+#include "bitmap_image.hpp"
 #include "scene.h"
 
 class scene;
@@ -20,8 +20,7 @@ public:
   camera(vec3 pos, num_t fov_x, num_t fov_y, num_t heading, num_t pitch,
          num_t roll);
 
-  png::image<png::rgba_pixel_16> render(const scene& scene, long resX,
-                                        long resY);
+  bitmap_image render(const scene& scene, long resX, long resY);
 
 private:
   vec3 _eye;

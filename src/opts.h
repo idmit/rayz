@@ -10,7 +10,7 @@
 #define rayz_opts_h
 
 #include <string>
-
+#include <iostream>
 #include "optionparser.h"
 
 namespace opts {
