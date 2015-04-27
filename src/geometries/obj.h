@@ -23,8 +23,8 @@ public:
   virtual vec3 get_normal(vec3 point) const override;
 
 private:
-  std::vector<triangle> _triangles;
-  box _box;
+  std::vector<std::vector<triangle> > _triangles;
+  std::vector<box> _boxes;
 };
 
 #endif /* defined(__rayz__obj__) */
