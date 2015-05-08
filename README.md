@@ -17,5 +17,5 @@ make
 ## Running
 
 ```
-bin/rayz --scene=./diff.yml --resolution_x=512 --resolution_y=512 --output=render.png  --trace_depth=2
+bin/rayz --scene=./diff.yml --resolution_x=512 --resolution_y=512 --output=render.bmp  --trace_depth=2
 ```
