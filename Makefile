@@ -1,8 +1,20 @@
 CXX       = g++
 LD        = g++
 
+ifeq ($(OS), Windows_NT)
+	LIB_DIR = lib/win
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S), Linux)
+		LIB_DIR = lib/lnx
+	endif
+	ifeq ($(UNAME_S), Darwin)
+		LIB_DIR = lib/osx
+	endif
+endif
+
 CFLAGS    = -Wall -Wno-comment -std=c++11 -pedantic-errors
-LIBS      = -Llib -lpoly34 -ltinyobjloader -lyaml-cpp
+LIBS      = -L$(LIB_DIR) -lpoly34 -ltinyobjloader -lyaml-cpp
 
 MODULES   = geometries nodes .
 SRC_DIR   = $(addprefix src/, $(MODULES))
