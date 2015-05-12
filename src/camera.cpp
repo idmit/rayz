@@ -39,7 +39,7 @@ camera::camera(const vec3 &pos, num_t fovx, num_t fovy, num_t heading,
 }
 
 bitmap_image camera::render(const scene &scene, long resX, long resY) {
-  bitmap_image img(resX, resY);
+  bitmap_image img(static_cast<unsigned>(resX), static_cast<unsigned>(resY));
   std::vector<std::vector<num_t> > closest_points(resY,
                                                   std::vector<num_t>(resX, -1));
 
@@ -79,8 +79,8 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
     y += pxh;
   }
 
-  for (long i = 0; i < resY; ++i) {
-    for (long j = 0; j < resX; ++j) {
+  for (unsigned i = 0; i < resY; ++i) {
+    for (unsigned j = 0; j < resX; ++j) {
       if (closest_points[i][j] >= 0) {
         num_t intensity = closest_points[i][j] / (2 * max_intensity);
         unsigned char val = 0xFF - intensity * 0xFF;
