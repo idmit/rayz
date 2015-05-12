@@ -37,6 +37,6 @@ geometry::ray_path sphere::intersect(ray ray) const {
   return list;
 }
 
-num_t sphere::get_color(vec3 point) const { return 0; }
+num_t sphere::get_color(const vec3 &point) const { return 0; }
 
-vec3 sphere::get_normal(vec3 point) const { return glm::normalize(point); }
+vec3 sphere::get_normal(const vec3 &point) const { return glm::normalize(point); }

@@ -69,6 +69,6 @@ geometry::ray_path cone::intersect(ray ray) const {
   return list;
 }
 
-num_t cone::get_color(vec3 point) const { return 0; }
+num_t cone::get_color(const vec3 &point) const { return 0; }
 
-vec3 cone::get_normal(vec3 point) const { return { 0, 0, 0 }; }
+vec3 cone::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }

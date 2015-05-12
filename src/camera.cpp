@@ -9,7 +9,7 @@
 #include "camera.h"
 #include "glm/gtx/rotate_vector.hpp"
 
-camera::camera(vec3 pos, num_t fovx, num_t fovy, vec3 lookat)
+camera::camera(const vec3 &pos, num_t fovx, num_t fovy, const vec3 &lookat)
     : _eye(pos),
       _lookat(lookat),
       _up({ 0, 0, 1 }),
@@ -20,8 +20,8 @@ camera::camera(vec3 pos, num_t fovx, num_t fovy, vec3 lookat)
       _fovx(fovx),
       _fovy(fovy) {}
 
-camera::camera(vec3 pos, num_t fovx, num_t fovy, num_t heading, num_t pitch,
-               num_t roll)
+camera::camera(const vec3 &pos, num_t fovx, num_t fovy, num_t heading,
+               num_t pitch, num_t roll)
     : camera(pos, fovx, fovy, pos + vec3(0, 1, 0)) {
 
   num_t dist = glm::distance(_lookat, _eye);

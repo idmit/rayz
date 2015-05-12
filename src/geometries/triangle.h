@@ -16,8 +16,8 @@ class triangle : public geometry {
 public:
   triangle(std::array<vec3, 3> vertices);
   virtual ray_path intersect(ray ray) const override;
-  virtual num_t get_color(vec3 point) const override;
-  virtual vec3 get_normal(vec3 point) const override;
+  virtual num_t get_color(const vec3 &point) const override;
+  virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
   std::array<vec3, 3> _vertices;

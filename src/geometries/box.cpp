@@ -8,7 +8,7 @@
 
 #include "box.h"
 
-box::box(vec3 min, vec3 max) : _params{ min, max } {}
+box::box(const vec3 &min, const vec3 &max) : _params{ min, max } {}
 
 geometry::ray_path box::intersect(ray ray) const {
   vec3 inv_dir{ 1 / ray.dir.x, 1 / ray.dir.y, 1 / ray.dir.z };
@@ -52,6 +52,6 @@ geometry::ray_path box::intersect(ray ray) const {
   return list;
 }
 
-num_t box::get_color(vec3 point) const { return 0; }
+num_t box::get_color(const vec3 &point) const { return 0; }
 
-vec3 box::get_normal(vec3 point) const { return glm::normalize(point); }
+vec3 box::get_normal(const vec3 &point) const { return glm::normalize(point); }

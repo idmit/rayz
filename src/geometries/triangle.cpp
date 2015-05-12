@@ -41,9 +41,9 @@ geometry::ray_path triangle::intersect(ray ray) const {
   return list;
 }
 
-num_t triangle::get_color(vec3 point) const { return 0; }
+num_t triangle::get_color(const vec3 &point) const { return 0; }
 
-vec3 triangle::get_normal(vec3 point) const {
+vec3 triangle::get_normal(const vec3 &point) const {
   return glm::normalize(
       glm::cross((_vertices[1] - _vertices[0]), _vertices[2] - _vertices[0]));
 }

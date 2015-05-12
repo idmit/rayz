@@ -65,6 +65,6 @@ cylinder::ray_path cylinder::intersect(ray ray) const {
   return list;
 }
 
-num_t cylinder::get_color(vec3 point) const { return 0; }
+num_t cylinder::get_color(const vec3 &point) const { return 0; }
 
-vec3 cylinder::get_normal(vec3 point) const { return { 0, 0, 0 }; }
+vec3 cylinder::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }

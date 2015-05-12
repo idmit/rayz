@@ -13,10 +13,10 @@
 
 class box : public geometry {
 public:
-  box(vec3 min, vec3 max);
+  box(const vec3 &min, const vec3 &max);
   virtual ray_path intersect(ray ray) const override;
-  virtual num_t get_color(vec3 point) const override;
-  virtual vec3 get_normal(vec3 point) const override;
+  virtual num_t get_color(const vec3 &point) const override;
+  virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
   vec3 _params[2];

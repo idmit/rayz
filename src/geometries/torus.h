@@ -15,8 +15,8 @@ class torus : public geometry {
 public:
   torus(num_t rad, num_t tube_rad);
   virtual ray_path intersect(ray ray) const override;
-  virtual num_t get_color(vec3 point) const override;
-  virtual vec3 get_normal(vec3 point) const override;
+  virtual num_t get_color(const vec3 &point) const override;
+  virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
   num_t _rad, _tube_rad;

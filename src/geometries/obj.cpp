@@ -62,6 +62,6 @@ geometry::ray_path obj::intersect(ray ray) const {
   return list;
 }
 
-num_t obj::get_color(vec3 point) const { return 0; }
+num_t obj::get_color(const vec3 &point) const { return 0; }
 
-vec3 obj::get_normal(vec3 point) const { return glm::normalize(point); }
+vec3 obj::get_normal(const vec3 &point) const { return glm::normalize(point); }

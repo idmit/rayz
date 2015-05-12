@@ -16,8 +16,8 @@ class scene;
 
 class camera {
 public:
-  camera(vec3 pos, num_t fov_x, num_t fov_y, vec3 lookat);
-  camera(vec3 pos, num_t fov_x, num_t fov_y, num_t heading, num_t pitch,
+  camera(const vec3 &pos, num_t fov_x, num_t fov_y, const vec3 &lookat);
+  camera(const vec3 &pos, num_t fov_x, num_t fov_y, num_t heading, num_t pitch,
          num_t roll);
 
   bitmap_image render(const scene& scene, long resX, long resY);

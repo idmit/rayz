@@ -15,8 +15,8 @@ class csg_union : public node {
 public:
   csg_union(std::unique_ptr<node> &&lhs, std::unique_ptr<node> &&rhs);
   virtual geometry::ray_path intersect(ray ray) const override;
-  virtual num_t get_color(vec3 point) const override;
-  virtual vec3 get_normal(vec3 point) const override;
+  virtual num_t get_color(const vec3 &point) const override;
+  virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
   std::unique_ptr<node> _lhs, _rhs;

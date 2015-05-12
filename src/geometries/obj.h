@@ -19,8 +19,8 @@ class obj : public geometry {
 public:
   obj(const char *filename);
   virtual ray_path intersect(ray ray) const override;
-  virtual num_t get_color(vec3 point) const override;
-  virtual vec3 get_normal(vec3 point) const override;
+  virtual num_t get_color(const vec3 &point) const override;
+  virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
   std::vector<std::vector<triangle> > _triangles;

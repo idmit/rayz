@@ -26,6 +26,6 @@ geometry::ray_path plane::intersect(ray ray) const {
   return list;
 }
 
-num_t plane::get_color(vec3 point) const { return 0; }
+num_t plane::get_color(const vec3 &point) const { return 0; }
 
-vec3 plane::get_normal(vec3 point) const { return { 0, 0, 0 }; }
+vec3 plane::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }

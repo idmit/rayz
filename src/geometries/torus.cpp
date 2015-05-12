@@ -53,6 +53,6 @@ geometry::ray_path torus::intersect(ray ray) const {
   return list;
 }
 
-num_t torus::get_color(vec3 point) const { return 0; }
+num_t torus::get_color(const vec3 &point) const { return 0; }
 
-vec3 torus::get_normal(vec3 point) const { return { 0, 0, 0 }; }
+vec3 torus::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }

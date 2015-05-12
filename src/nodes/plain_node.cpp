@@ -8,7 +8,7 @@
 
 #include "plain_node.h"
 
-void transform(mat4 t, vec3 *v) { *v = vec3(t * glm::dvec4(*v, 1)); }
+void transform(const mat4 &t, vec3 *v) { *v = vec3(t * glm::dvec4(*v, 1)); }
 geometry::ray_path transform(mat4 t, ray pr, ray lr, geometry::ray_path list) {
   geometry::ray_path out_list;
 
@@ -26,7 +26,7 @@ geometry::ray_path transform(mat4 t, ray pr, ray lr, geometry::ray_path list) {
   return out_list;
 }
 
-vec3 transform(mat4 t, vec3 v) { return vec3(t * glm::dvec4(v, 1)); }
+vec3 transform(const mat4 &t, vec3 v) { return vec3(t * glm::dvec4(v, 1)); }
 
 plain_node::plain_node(std::unique_ptr<geometry> &&geom)
     : _geom(std::move(geom)) {}
@@ -57,10 +57,10 @@ geometry::ray_path plain_node::intersect(ray parent_ray) const {
   return list;
 }
 
-num_t plain_node::get_color(vec3 point) const {
+num_t plain_node::get_color(const vec3 &point) const {
   return _geom->get_color(point);
 }
 
-vec3 plain_node::get_normal(vec3 point) const {
+vec3 plain_node::get_normal(const vec3 &point) const {
   return _geom->get_normal(point);
 }

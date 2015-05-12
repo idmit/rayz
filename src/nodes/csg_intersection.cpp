@@ -48,6 +48,6 @@ geometry::ray_path csg_intersection::intersect(ray ray) const {
   return out_list;
 }
 
-num_t csg_intersection::get_color(vec3 intersectionPoint) const { return 0; }
+num_t csg_intersection::get_color(const vec3 &point) const { return 0; }
 
-vec3 csg_intersection::get_normal(vec3 point) const { return { 0, 0, 0 }; }
+vec3 csg_intersection::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }
