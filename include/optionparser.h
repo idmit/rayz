@@ -2468,7 +2468,7 @@ namespace option
                     
                     leftwidth = 0;
                     overlong_column_threshold = 0;
-                    for (int i = 0; i < lastcolumn; ++i)
+                    for (int i = 0; i < lastcolumn && i < maxcolumns; ++i)
                     {
                         leftwidth += col_width[i];
                         upmax(overlong_column_threshold, col_width[i]);
