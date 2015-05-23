@@ -1,0 +1,79 @@
+---
+# Use degrees instead of radians
+
+- camera:
+   position: {x: 0, y: 0, z: 0}
+   orientation: {h: 0, p: 0, r: 0}
+   fov_x: 120
+   fov_y: 120
+
+# Scene's hierarchy
+- node:
+   - lcs : {x: 10, y: 40, z: 15, h: 10, p: 15, r: 0, sx: 1, sy: 1, sz: 1}
+   - cylinder:
+      radius: 10
+      height: 20
+   - material:
+      ambient : {r: 0.5, g: 0.5, b: 10, a : 0.5}
+      diffuse : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      emissive : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      specular : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      power : 10
+- node:
+   - lcs : {x: 25, y: 40, z: 15, h: 0, p: 0, r: 0, sx: 1, sy: 1, sz: 1}
+   - cone:
+      top_radius: 5
+      bottom_radius: 10
+      height: 20
+   - material:
+      ambient : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      diffuse : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      emissive : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      specular : {r: 0.5, g: 0.5, b: 1, a : 0.5}
+      power : 0.2
+- node:
+   - lcs : {x: -10, y: 40, z: 0, h: 0, p: 0, r: 0, sx: 1, sy: 1, sz: 1}
+   - sphere:
+      radius: 10
+   - material:
+      ambient : {r: 10, g: 0.5, b: 0.5, a : 0.5}
+      diffuse : {r: 1, g: 0.5, b: 0.5, a : 0.5}
+      emissive : {r: 1, g: 0.5, b: 0.5, a : 0.5}
+      specular : {r: 1000, g: 1, b: 0.5, a : 0.5}
+      power : 10
+- node:
+   - lcs : {x: 0, y: 0, z: -10, h: 0, p: 0, r: 0, sx: 1, sy: 1, sz: 1}
+   - plane: {}
+   - material:
+      ambient : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      diffuse : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      emissive : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      specular : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      power : 0.2
+- node:
+   - lcs : {x: -10, y: 20, z: 5, h: 20, p: 0, r: -30, sx: 1, sy: 1, sz: 1}
+   - triangle:
+      p0: {x: 5, y: 0, z: -5}
+      p1: {x: -5, y: 0, z: -5}
+      p2: {x: 0, y: 0, z: 3}
+   - material:
+      ambient : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      diffuse : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      emissive : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      specular : {r: 0.5, g: 1, b: 0.5, a : 0.5}
+      power : 0.2
+- point_light:
+   position : {x: -5, y: 25, z: 10}
+
+   ambient : {r: 0.1, g: 0.1, b: 0.1, a : 1}
+   diffuse : {r: 1, g: 1, b: 1, a : 1}
+   specular : {r: 1, g: 1, b: 1, a : 1}
+   attenuation : {x: 0.1, y: 0.01, z: 0.005}
+- point_light:
+   position : {x: 5, y: 25, z: 30}
+
+   ambient : {r: 1, g: 1, b: 1, a : 1}
+   diffuse : {r: 1, g: 1, b: 1, a : 1}
+   specular : {r: 100, g: 100, b: 100, a : 1}
+   attenuation : {x: 0.001, y: 0.001, z: 0.005}
+
