@@ -40,8 +40,8 @@ bool get(int argc, const char* argv[], std::string* scene_desc,
   argc -= (argc > 0);
   argv += (argc > 0);
   option::Stats stats(opts::usage, argc, argv);
-  option::Option* options = new option::Option[stats.options_max],
-                  * buffer = new option::Option[stats.buffer_max];
+  option::Option *options = new option::Option[stats.options_max],
+                 *buffer = new option::Option[stats.buffer_max];
   option::Parser parse(opts::usage, argc, argv, options, buffer);
 
   if (parse.error())

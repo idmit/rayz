@@ -18,8 +18,8 @@ class camera;
 
 class scene {
 public:
-  static std::unique_ptr<camera> create(std::string scene_desc, scene* scene);
-  std::vector<const node*> nodes() const;
+  static std::unique_ptr<camera> create(std::string scene_desc, scene *scene);
+  std::vector<const node *> nodes() const;
 
 private:
   std::vector<std::unique_ptr<node> > _nodes;
