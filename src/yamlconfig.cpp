@@ -184,28 +184,32 @@ std::unique_ptr<plane> parse_plane(YAML::Node plane_config) {
   return make_unique<plane>();
 }
 
-std::unique_ptr<light> parse_light(YAML::Node light_config) {
+std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_light(
+    YAML::Node light_config) {
   if (!light_config) {
-    return nullptr;
+    return { nullptr, nullptr };
   }
 
-  std::unique_ptr<light> parsed_light = nullptr;
+  std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parsed_light = {
+    nullptr, nullptr
+  };
 
-  parsed_light ||
-      (parsed_light = parse_point_light(light_config["point_light"]));
+  parsed_light.first ||
+      (parsed_light = parse_point_light(light_config["point_light"])).first;
 
   return parsed_light;
 }
 
-std::unique_ptr<light> parse_point_light(YAML::Node light_config) {
+std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_point_light(
+    YAML::Node light_config) {
   if (!light_config) {
-    return nullptr;
+    return { nullptr, nullptr };
   }
 
   if (!light_config["ambient"] || !light_config["diffuse"] ||
       !light_config["specular"] || !light_config["attenuation"] ||
       !light_config["position"]) {
-    return nullptr;
+    return { nullptr, nullptr };
   }
 
   const char *names[3] = { "ambient", "diffuse", "specular" };
@@ -228,8 +232,19 @@ std::unique_ptr<light> parse_point_light(YAML::Node light_config) {
   att.y = light_config["attenuation"]["y"].as<num_t>();
   att.z = light_config["attenuation"]["z"].as<num_t>();
 
-  return make_unique<point_light>(color(comps[0]), color(comps[1]),
-                                  color(comps[2]), att, pos);
+  material mat;
+  mat.amb = color{ 1, 1, 1, 1 };
+  mat.diff = color{ 1, 1, 1, 1 };
+  mat.emiss = color{ 1, 1, 1, 1 };
+  mat.spec = color{ 1, 1, 1, 1 };
+  mat.pow = 0;
+
+  auto rep = make_unique<plain_node>(make_unique<sphere>(1), mat);
+  mat4 lcs;
+  rep->set_lcs(glm::translate(lcs, pos));
+  return { make_unique<point_light>(color(comps[0]), color(comps[1]),
+                                    color(comps[2]), att, pos),
+           std::move(rep) };
 }
 
 std::unique_ptr<material> parse_material(YAML::Node material_config) {

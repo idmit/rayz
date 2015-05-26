@@ -41,8 +41,10 @@ std::unique_ptr<obj> parse_obj(YAML::Node obj_config);
 std::unique_ptr<box> parse_box(YAML::Node box_config);
 std::unique_ptr<plane> parse_plane(YAML::Node plane_config);
 
-std::unique_ptr<light> parse_point_light(YAML::Node light_config);
-std::unique_ptr<light> parse_light(YAML::Node light_config);
+std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_point_light(
+    YAML::Node light_config);
+std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_light(
+    YAML::Node light_config);
 std::unique_ptr<material> parse_material(YAML::Node material_config);
 
 std::unique_ptr<camera> parse_camera(YAML::Node camera_config);
