@@ -12,6 +12,7 @@
 #include <memory>
 #include <vector>
 #include "nodes/node.h"
+#include "lights/light.h"
 #include "camera.h"
 
 class camera;
@@ -20,9 +21,11 @@ class scene {
 public:
   static std::unique_ptr<camera> create(std::string scene_desc, scene *scene);
   std::vector<const node *> nodes() const;
+  std::vector<const light *> lights() const;
 
 private:
   std::vector<std::unique_ptr<node> > _nodes;
+  std::vector<std::unique_ptr<light> > _lights;
 };
 
 #endif /* defined(__rayz__scene__) */
