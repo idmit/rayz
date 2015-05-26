@@ -33,7 +33,7 @@ plain_node::plain_node(std::unique_ptr<geometry> &&geom, const material &mat)
 
 geometry::ray_path plain_node::intersect(ray parent_ray) const {
   mat4 to_parent_transform = _lcs;
-  mat4 to_node_transform = glm::inverse(to_parent_transform);
+  mat4 to_node_transform = _ilcs;
 
   ray lcs_ray;
 

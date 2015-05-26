@@ -29,10 +29,12 @@ public:
 
   void set_lcs(const mat4 &lcs);
   mat4 get_lcs() const;
+  mat4 get_ilcs() const;
   material get_material() const;
 
 protected:
   mat4 _lcs;
+  mat4 _ilcs;
   material _material;
   std::vector<std::unique_ptr<node> > _children;
 };

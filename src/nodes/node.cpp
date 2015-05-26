@@ -26,8 +26,12 @@ std::vector<const node *> node::children() const {
   return children;
 }
 
-void node::set_lcs(const mat4 &lcs) { _lcs = lcs; }
+void node::set_lcs(const mat4 &lcs) {
+  _lcs = lcs;
+  _ilcs = glm::inverse(_lcs);
+}
 
 mat4 node::get_lcs() const { return _lcs; }
+mat4 node::get_ilcs() const { return _ilcs; }
 
 material node::get_material() const { return _material; }
