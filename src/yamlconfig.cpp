@@ -14,6 +14,8 @@
 #include "nodes/csg_intersection.h"
 #include "nodes/csg_difference.h"
 
+#include "lights/point_light.h"
+
 #include "yamlconfig.h"
 
 template <typename T, typename... Args>
@@ -40,11 +42,14 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
   geom || (geom = parse_box(node_config[1]["box"]));
   geom || (geom = parse_plane(node_config[1]["plane"]));
 
-  !geom || (parsed_node = make_unique<plain_node>(std::move(geom)));
+  auto mat = parse_material(node_config[2]["material"]);
+
+  !geom || !mat ||
+      (parsed_node = make_unique<plain_node>(std::move(geom), *mat));
 
   if (parsed_node) {
     parsed_node->set_lcs(parse_lcs(node_config[0]["lcs"]));
-    for (unsigned long i = 2; i < node_config.size(); ++i) {
+    for (unsigned long i = 3; i < node_config.size(); ++i) {
       auto child = std::move(parse_node(node_config[i]));
       if (child) {
         parsed_node->add_child(std::move(child));
@@ -177,6 +182,83 @@ std::unique_ptr<plane> parse_plane(YAML::Node plane_config) {
   //             plane_config["point"]["z"].as<num_t>());
 
   return make_unique<plane>();
+}
+
+std::unique_ptr<light> parse_light(YAML::Node light_config) {
+  if (!light_config) {
+    return nullptr;
+  }
+
+  std::unique_ptr<light> parsed_light = nullptr;
+
+  parsed_light ||
+      (parsed_light = parse_point_light(light_config["point_light"]));
+
+  return parsed_light;
+}
+
+std::unique_ptr<light> parse_point_light(YAML::Node light_config) {
+  if (!light_config) {
+    return nullptr;
+  }
+
+  if (!light_config["ambient"] || !light_config["diffuse"] ||
+      !light_config["specular"] || !light_config["attenuation"] ||
+      !light_config["position"]) {
+    return nullptr;
+  }
+
+  const char *names[3] = { "ambient", "diffuse", "specular" };
+  vec4 comps[3];
+
+  for (unsigned i = 0; i < 3; ++i) {
+    comps[i].x = light_config[names[i]]["r"].as<num_t>();
+    comps[i].y = light_config[names[i]]["g"].as<num_t>();
+    comps[i].z = light_config[names[i]]["b"].as<num_t>();
+    comps[i].w = light_config[names[i]]["a"].as<num_t>();
+  }
+
+  vec3 pos;
+  pos.x = light_config["position"]["x"].as<num_t>();
+  pos.y = light_config["position"]["y"].as<num_t>();
+  pos.z = light_config["position"]["z"].as<num_t>();
+
+  vec3 att;
+  att.x = light_config["attenuation"]["x"].as<num_t>();
+  att.y = light_config["attenuation"]["y"].as<num_t>();
+  att.z = light_config["attenuation"]["z"].as<num_t>();
+
+  return make_unique<point_light>(color(comps[0]), color(comps[1]),
+                                  color(comps[2]), att, pos);
+}
+
+std::unique_ptr<material> parse_material(YAML::Node material_config) {
+  if (!material_config) {
+    return nullptr;
+  }
+
+  if (!material_config["ambient"] || !material_config["diffuse"] ||
+      !material_config["emissive"] || !material_config["specular"] ||
+      !material_config["power"]) {
+    return nullptr;
+  }
+
+  const char *names[4] = { "ambient", "diffuse", "emissive", "specular" };
+  vec4 comps[4];
+
+  for (unsigned i = 0; i < 4; ++i) {
+    comps[i].x = material_config[names[i]]["r"].as<num_t>();
+    comps[i].y = material_config[names[i]]["g"].as<num_t>();
+    comps[i].z = material_config[names[i]]["b"].as<num_t>();
+    comps[i].w = material_config[names[i]]["a"].as<num_t>();
+  }
+
+  num_t pow = material_config["power"].as<num_t>();
+
+  material mat{ color{ comps[0] }, color{ comps[1] }, color{ comps[2] },
+                color{ comps[3] }, pow };
+
+  return make_unique<material>(mat);
 }
 
 std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config) {

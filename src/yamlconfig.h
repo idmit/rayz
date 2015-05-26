@@ -23,6 +23,9 @@
 #include "geometries/box.h"
 #include "geometries/plane.h"
 
+#include "lights/light.h"
+#include "lights/material.h"
+
 std::unique_ptr<node> parse_plain_node(YAML::Node node_config);
 std::unique_ptr<node> parse_csg_intersection(YAML::Node csg_config);
 std::unique_ptr<node> parse_csg_union(YAML::Node csg_config);
@@ -37,6 +40,10 @@ std::unique_ptr<sphere> parse_sphere(YAML::Node sphere_config);
 std::unique_ptr<obj> parse_obj(YAML::Node obj_config);
 std::unique_ptr<box> parse_box(YAML::Node box_config);
 std::unique_ptr<plane> parse_plane(YAML::Node plane_config);
+
+std::unique_ptr<light> parse_point_light(YAML::Node light_config);
+std::unique_ptr<light> parse_light(YAML::Node light_config);
+std::unique_ptr<material> parse_material(YAML::Node material_config);
 
 std::unique_ptr<camera> parse_camera(YAML::Node camera_config);
 
