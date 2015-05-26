@@ -20,6 +20,7 @@ public:
 
 private:
   num_t _rad, _height;
+  num_t _rad2, _height2;
 };
 
 #endif /* defined(__rayz__cylinder__) */
