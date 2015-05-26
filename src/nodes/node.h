@@ -12,9 +12,12 @@
 #include <memory>
 #include <vector>
 #include "../geometries/geometry.h"
+#include "../lights/material.h"
 
 class node {
 public:
+  node();
+  node(const material &mat);
   void add_child(std::unique_ptr<node> &&child);
 
   virtual geometry::ray_path intersect(ray ray) const = 0;
@@ -26,9 +29,11 @@ public:
 
   void set_lcs(const mat4 &lcs);
   mat4 get_lcs() const;
+  material get_material() const;
 
 protected:
   mat4 _lcs;
+  material _material;
   std::vector<std::unique_ptr<node> > _children;
 };
 

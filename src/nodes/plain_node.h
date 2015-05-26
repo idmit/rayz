@@ -13,7 +13,7 @@
 
 class plain_node : public node {
 public:
-  plain_node(std::unique_ptr<geometry> &&geom);
+  plain_node(std::unique_ptr<geometry> &&geom, const material &mat);
 
   virtual geometry::ray_path intersect(ray ray) const override;
   virtual num_t get_color(const vec3 &point) const override;

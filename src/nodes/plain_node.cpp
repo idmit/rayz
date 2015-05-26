@@ -28,8 +28,8 @@ geometry::ray_path transform(mat4 t, ray pr, ray lr, geometry::ray_path list) {
 
 vec3 transform(const mat4 &t, vec3 v) { return vec3(t * glm::dvec4(v, 1)); }
 
-plain_node::plain_node(std::unique_ptr<geometry> &&geom)
-    : _geom(std::move(geom)) {}
+plain_node::plain_node(std::unique_ptr<geometry> &&geom, const material &mat)
+    : node(mat), _geom(std::move(geom)) {}
 
 geometry::ray_path plain_node::intersect(ray parent_ray) const {
   mat4 to_parent_transform = _lcs;

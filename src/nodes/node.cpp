@@ -8,7 +8,10 @@
 
 #include "node.h"
 
+node::node() {}
 node::~node() {}
+
+node::node(const material &mat) : _material(mat) {}
 
 void node::add_child(std::unique_ptr<node> &&child) {
   _children.push_back(std::move(child));
@@ -26,3 +29,5 @@ std::vector<const node *> node::children() const {
 void node::set_lcs(const mat4 &lcs) { _lcs = lcs; }
 
 mat4 node::get_lcs() const { return _lcs; }
+
+material node::get_material() const { return _material; }
