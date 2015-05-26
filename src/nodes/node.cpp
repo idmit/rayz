@@ -8,6 +8,8 @@
 
 #include "node.h"
 
+node::~node() {}
+
 void node::add_child(std::unique_ptr<node> &&child) {
   _children.push_back(std::move(child));
 }

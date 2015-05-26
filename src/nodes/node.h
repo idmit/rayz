@@ -20,6 +20,7 @@ public:
   virtual geometry::ray_path intersect(ray ray) const = 0;
   virtual num_t get_color(const vec3 &point) const = 0;
   virtual vec3 get_normal(const vec3 &point) const = 0;
+  virtual ~node();
 
   std::vector<const node *> children() const;
 
