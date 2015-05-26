@@ -81,7 +81,7 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
       if (id) {
         for (auto &light : scene.lights()) {
 
-          vec3 norm = id->get_normal(id_point);
+          vec3 norm = glm::normalize(id->get_normal(id_point));
           material material = id->get_material();
 
           vec3 vtoe = glm::normalize(_eye - id_point);

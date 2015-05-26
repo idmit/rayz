@@ -29,6 +29,7 @@ std::vector<const node *> node::children() const {
 void node::set_lcs(const mat4 &lcs) {
   _lcs = lcs;
   _ilcs = glm::inverse(_lcs);
+  _tlcs = glm::transpose(_lcs);
 }
 
 mat4 node::get_lcs() const { return _lcs; }

@@ -35,6 +35,7 @@ public:
 protected:
   mat4 _lcs;
   mat4 _ilcs;
+  mat4 _tlcs;
   material _material;
   std::vector<std::unique_ptr<node> > _children;
 };
