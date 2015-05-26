@@ -16,7 +16,7 @@ endif
 CFLAGS    = -Wall -Wno-comment -std=c++11 -pedantic-errors
 LIBS      = -L$(LIB_DIR) -lpoly34 -ltinyobjloader -lyaml-cpp
 
-MODULES   = geometries nodes .
+MODULES   = geometries nodes lights .
 SRC_DIR   = $(addprefix src/, $(MODULES))
 BUILD_DIR = $(addprefix build/, $(MODULES))
 BIN_DIR   = bin
