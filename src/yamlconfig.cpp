@@ -173,14 +173,6 @@ std::unique_ptr<plane> parse_plane(YAML::Node plane_config) {
     return nullptr;
   }
 
-  //  if (!plane_config["point"]) {
-  //    return nullptr;
-  //  }
-
-  //  vec3 point(plane_config["point"]["x"].as<num_t>(),
-  //             plane_config["point"]["y"].as<num_t>(),
-  //             plane_config["point"]["z"].as<num_t>());
-
   return make_unique<plane>();
 }
 
