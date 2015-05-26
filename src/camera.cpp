@@ -104,7 +104,8 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
                         light->get_att().z * dis * dis;
 
           color out{ (amb + diff + spec) / alpha };
-          closest_points[i][j] = out;
+          closest_points[i][j].rgba =
+              glm::clamp(closest_points[i][j].rgba + out.rgba, 0.0, 1.0);
         }
       }
       x += pxw;
