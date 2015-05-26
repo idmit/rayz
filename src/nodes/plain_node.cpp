@@ -57,8 +57,8 @@ geometry::ray_path plain_node::intersect(ray parent_ray) const {
   return list;
 }
 
-num_t plain_node::get_color(const vec3 &point) const {
-  return _geom->get_color(point);
+color plain_node::get_color(const vec3 &point) const {
+  return color{ 0, 0, 0, 0 };
 }
 
 vec3 plain_node::get_normal(const vec3 &point) const {

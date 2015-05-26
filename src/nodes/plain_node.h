@@ -16,7 +16,7 @@ public:
   plain_node(std::unique_ptr<geometry> &&geom, const material &mat);
 
   virtual geometry::ray_path intersect(ray ray) const override;
-  virtual num_t get_color(const vec3 &point) const override;
+  virtual color get_color(const vec3 &point) const override;
   virtual vec3 get_normal(const vec3 &point) const override;
 
 private:

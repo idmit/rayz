@@ -15,7 +15,7 @@ class csg_intersection : public node {
 public:
   csg_intersection(std::unique_ptr<node> &&lhs, std::unique_ptr<node> &&rhs);
   virtual geometry::ray_path intersect(ray ray) const override;
-  virtual num_t get_color(const vec3 &point) const override;
+  virtual color get_color(const vec3 &point) const override;
   virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
