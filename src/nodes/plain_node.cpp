@@ -62,5 +62,5 @@ color plain_node::get_color(const vec3 &point) const {
 }
 
 vec3 plain_node::get_normal(const vec3 &point) const {
-  return _geom->get_normal(point);
+  return transform(_lcs, _geom->get_normal(transform(_ilcs, point)));
 }
