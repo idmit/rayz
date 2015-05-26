@@ -14,6 +14,7 @@
 
 using num_t = double;
 using vec3 = glm::tvec3<num_t>;
+using vec4 = glm::tvec4<num_t>;
 using mat4 = glm::tmat4x4<num_t>;
 
 struct ray {
