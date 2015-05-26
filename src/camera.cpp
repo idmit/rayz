@@ -40,39 +40,56 @@ camera::camera(const vec3 &pos, num_t fovx, num_t fovy, num_t heading,
 
 bitmap_image camera::render(const scene &scene, long resX, long resY) {
   bitmap_image img(static_cast<unsigned>(resX), static_cast<unsigned>(resY));
-  std::vector<std::vector<num_t> > closest_points(resY,
-                                                  std::vector<num_t>(resX, -1));
+  std::vector<std::vector<color> > closest_points(
+      resY, std::vector<color>(resX, color{}));
 
   num_t pxw = 2 * _dist * glm::tan(glm::radians(_fovx / 2)) / resX;
   num_t pxh = 2 * _dist * glm::tan(glm::radians(_fovy / 2)) / resY;
-
-  num_t max_intensity = 0;
 
   num_t x = -(resX * pxw / 2);
   num_t y = -(resY * pxh / 2);
 
   for (long i = resY - 1; i >= 0; --i) {
     for (long j = 0; j < resX; ++j) {
-      for (auto &node : scene.nodes()) {
-        ray world_ray;
-        world_ray.origin = _eye;
-        world_ray.dir = glm::normalize(x * _u + y * _v - _dist * _w);
+      for (auto &light : scene.lights()) {
+        for (auto &node : scene.nodes()) {
+          ray world_ray;
+          world_ray.origin = _eye;
+          world_ray.dir = glm::normalize(x * _u + y * _v - _dist * _w);
 
-        if (i == resX / 2 && j == resY / 2) {
-          printf("%s", "");
-        }
+          vec3 closest_point;
+          auto intersected = node->intersect(world_ray);
+          if (!intersected.empty()) {
+            closest_point =
+                world_ray.origin + world_ray.dir * intersected.front().first;
 
-        vec3 closest_point;
-        auto intersected = node->intersect(world_ray);
-        if (!intersected.empty()) {
-          closest_point =
-              world_ray.origin + world_ray.dir * intersected.front().first;
-          if (closest_points[i][j] < 0) {
-            closest_points[i][j] = glm::distance(_eye, closest_point);
+            vec3 norm = node->get_normal(closest_point);
+            material material = node->get_material();
+
+            vec3 vtoe = glm::normalize(_eye - closest_point);
+            vec3 vtol = glm::normalize(light->get_dir(closest_point));
+
+            num_t d = glm::max(glm::dot(vtol, norm), 0.0);
+            num_t s = 0;
+            if (d > 0) {
+              s = glm::pow(
+                  glm::max(glm::dot(norm, glm::normalize(vtoe + vtol)), 0.0),
+                  material.pow);
+            }
+
+            vec4 amb = material.amb.rgba * light->get_ambient().rgba;
+            vec4 diff = d * (material.diff.rgba * light->get_diffuse().rgba);
+            vec4 spec = s * (material.spec.rgba * light->get_specular().rgba);
+
+            num_t dis = light->get_dist(closest_point);
+            num_t alpha = light->get_att().x + light->get_att().y * dis +
+                          light->get_att().z * dis * dis;
+
+            color out{ (amb + diff + spec) / alpha };
+            closest_points[i][j] = out;
           }
         }
       }
-      max_intensity = glm::max(max_intensity, closest_points[i][j]);
       x += pxw;
     }
     x = -(resX * pxw / 2);
@@ -81,13 +98,8 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
 
   for (unsigned i = 0; i < resY; ++i) {
     for (unsigned j = 0; j < resX; ++j) {
-      if (closest_points[i][j] >= 0) {
-        num_t intensity = closest_points[i][j] / (2 * max_intensity);
-        unsigned char val = 0xFF - intensity * 0xFF;
-        img.set_pixel(j, i, val, val, val);
-      } else {
-        img.set_pixel(j, i, 0, 0, 0);
-      }
+      img.set_pixel(j, i, closest_points[i][j].r(), closest_points[i][j].g(),
+                    closest_points[i][j].b());
     }
   }
 
