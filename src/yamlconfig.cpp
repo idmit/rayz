@@ -24,6 +24,10 @@ std::unique_ptr<T> make_unique(Args &&... args) {
 mat4 parse_lcs(YAML::Node lcs_config);
 
 std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
+  if (!node_config) {
+    return nullptr;
+  }
+
   std::unique_ptr<node> parsed_node = nullptr;
   std::unique_ptr<geometry> geom = nullptr;
 
@@ -222,17 +226,16 @@ std::unique_ptr<node> parse_node(YAML::Node node_config) {
     return nullptr;
   }
 
-  if (node_config["node"]) {
-    return parse_plain_node(node_config["node"]);
-  } else if (node_config["csg_union"]) {
-    return parse_csg_union(node_config["csg_union"]);
-  } else if (node_config["csg_intersection"]) {
-    return parse_csg_intersection(node_config["csg_intersection"]);
-  } else if (node_config["csg_difference"]) {
-    return parse_csg_difference(node_config["csg_difference"]);
-  }
+  std::unique_ptr<node> parsed_node = nullptr;
 
-  return nullptr;
+  parsed_node || (parsed_node = parse_plain_node(node_config["node"]));
+  parsed_node || (parsed_node = parse_csg_union(node_config["csg_union"]));
+  parsed_node ||
+      (parsed_node = parse_csg_intersection(node_config["csg_intersection"]));
+  parsed_node ||
+      (parsed_node = parse_csg_difference(node_config["csg_difference"]));
+
+  return parsed_node;
 }
 
 mat4 parse_lcs(YAML::Node lcs_config) {
