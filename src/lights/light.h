@@ -10,6 +10,7 @@
 #define __rayz__light__
 
 #include "color.h"
+#include "../nodes/node.h"
 
 struct light_components {
   color amb;
@@ -20,7 +21,7 @@ struct light_components {
 class light {
 public:
   light();
-  light(color amb, color diff, color spec);
+  light(color amb, color diff, color spec, const node *rep);
   virtual ~light();
 
   virtual void enable();
@@ -39,6 +40,8 @@ public:
   virtual num_t get_dist(const vec3 &point) const = 0;
 
   virtual vec3 get_att() const = 0;
+
+  const node *rep = nullptr;
 
 protected:
   light_components _comps;

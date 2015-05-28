@@ -14,7 +14,8 @@
 class point_light : public light {
 public:
   using light::light;
-  point_light(color amb, color diff, color spec, vec3 att, vec3 pos);
+  point_light(color amb, color diff, color spec, const node *rep, vec3 att,
+              vec3 pos);
 
   void set_pos(const vec3 &pos);
   vec3 get_dir(const vec3 &point) const override;

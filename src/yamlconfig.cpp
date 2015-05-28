@@ -235,7 +235,7 @@ std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_point_light(
   mat4 lcs;
   rep->set_lcs(glm::translate(lcs, pos));
   return { make_unique<point_light>(color(comps[0]), color(comps[1]),
-                                    color(comps[2]), att, pos),
+                                    color(comps[2]), rep.get(), att, pos),
            std::move(rep) };
 }
 

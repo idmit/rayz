@@ -8,8 +8,9 @@
 
 #include "point_light.h"
 
-point_light::point_light(color amb, color diff, color spec, vec3 att, vec3 pos)
-    : light(amb, diff, spec), _att(att), _pos(pos) {}
+point_light::point_light(color amb, color diff, color spec, const node *rep,
+                         vec3 att, vec3 pos)
+    : light(amb, diff, spec, rep), _att(att), _pos(pos) {}
 
 void point_light::set_pos(const vec3 &pos) { _pos = pos; }
 

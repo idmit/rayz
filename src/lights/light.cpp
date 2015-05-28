@@ -9,7 +9,8 @@
 #include "light.h"
 
 light::light() : _enabled(false) {}
-light::light(color amb, color diff, color spec) : _comps({ amb, diff, spec }) {}
+light::light(color amb, color diff, color spec, const node *rep)
+    : _comps({ amb, diff, spec }), rep(rep) {}
 light::~light() {}
 
 void light::enable() { _enabled = true; }
