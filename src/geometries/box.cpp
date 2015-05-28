@@ -54,4 +54,11 @@ geometry::ray_path box::intersect(ray ray) const {
 
 num_t box::get_color(const vec3 &point) const { return 0; }
 
-vec3 box::get_normal(const vec3 &point) const { return glm::normalize(point); }
+vec3 box::get_normal(const vec3 &point) const {
+  vec3 norm;
+  norm.x = point.x <= _params[0].x ? -1 : (point.x >= _params[1].x ? 1 : 0);
+  norm.y = point.y <= _params[0].y ? -1 : (point.y >= _params[1].y ? 1 : 0);
+  norm.z = point.z <= _params[0].z ? -1 : (point.z >= _params[1].z ? 1 : 0);
+
+  return glm::normalize(norm);
+}

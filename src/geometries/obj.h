@@ -22,9 +22,14 @@ public:
   virtual num_t get_color(const vec3 &point) const override;
   virtual vec3 get_normal(const vec3 &point) const override;
 
+  virtual material get_material() const override;
+
 private:
   std::vector<std::vector<triangle> > _triangles;
+  std::vector<std::vector<material> > _materials;
   std::vector<box> _boxes;
+  mutable material _first_material;
+  mutable vec3 _first_normal;
 };
 
 #endif /* defined(__rayz__obj__) */

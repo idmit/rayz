@@ -9,8 +9,17 @@
 #include <algorithm>
 #include "cone.h"
 
+#include "glm/gtc/epsilon.hpp"
+
 cone::cone(num_t bottom_rad, num_t top_rad, num_t height)
-    : _bottom_rad(bottom_rad), _top_rad(top_rad), _height(height) {}
+    : _bottom_rad(bottom_rad), _top_rad(top_rad), _height(height) {
+
+  num_t tan = (_bottom_rad - _top_rad) / _height;
+  num_t tan2 = tan * tan;
+  num_t lheight = _top_rad * _height / (_bottom_rad - _top_rad);
+
+  _im_height = lheight + _height;
+}
 
 geometry::ray_path cone::intersect(ray ray) const {
   num_t ts[4] = { INFINITY, INFINITY, INFINITY, INFINITY };
@@ -35,7 +44,7 @@ geometry::ray_path cone::intersect(ray ray) const {
 
   glm::dvec2 origin(ray.origin), dir(ray.dir);
   num_t a = glm::dot(dir, dir) - tan2 * ray.dir.z * ray.dir.z;
-  num_t b = glm::dot(origin, dir) - 2 * tan2 * ray.origin.z * ray.dir.z;
+  num_t b = glm::dot(origin, dir) - tan2 * ray.origin.z * ray.dir.z;
   num_t c = glm::dot(origin, origin) - tan2 * ray.origin.z * ray.origin.z;
 
   num_t d = b * b - a * c;
@@ -71,4 +80,16 @@ geometry::ray_path cone::intersect(ray ray) const {
 
 num_t cone::get_color(const vec3 &point) const { return 0; }
 
-vec3 cone::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }
+vec3 cone::get_normal(const vec3 &point) const {
+  glm::tvec2<num_t> xy(point);
+  if (glm::epsilonEqual(point.z, -_im_height + _height,
+                        glm::epsilon<num_t>())) {
+    return vec3{ 0, 0, 1 };
+  }
+  if (glm::epsilonEqual(point.z, -_height, glm::epsilon<num_t>())) {
+    return vec3{ 0, 0, -1 };
+  }
+  xy = glm::normalize(xy);
+  return vec3{ xy.x * _im_height / _bottom_rad, xy.y * _im_height / _bottom_rad,
+               _bottom_rad / _im_height };
+}

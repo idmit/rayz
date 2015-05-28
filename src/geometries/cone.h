@@ -19,7 +19,7 @@ public:
   virtual vec3 get_normal(const vec3 &point) const override;
 
 private:
-  num_t _bottom_rad, _top_rad, _height;
+  num_t _bottom_rad, _top_rad, _height, _im_height;
 };
 
 #endif /* defined(__rayz__cone__) */

@@ -55,4 +55,9 @@ geometry::ray_path torus::intersect(ray ray) const {
 
 num_t torus::get_color(const vec3 &point) const { return 0; }
 
-vec3 torus::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }
+vec3 torus::get_normal(const vec3 &point) const {
+  glm::tvec2<num_t> xy(point);
+  num_t alpha = 1 - _rad / xy.length();
+
+  return vec3{ alpha * point.x, alpha * point.y, point.z };
+}
