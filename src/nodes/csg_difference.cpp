@@ -72,3 +72,5 @@ color csg_difference::get_color(const vec3 &point) const {
 }
 
 vec3 csg_difference::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }
+
+material csg_difference::get_material() const { return _lhs->get_material(); }

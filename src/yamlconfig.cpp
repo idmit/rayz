@@ -44,8 +44,10 @@ std::unique_ptr<node> parse_plain_node(YAML::Node node_config) {
 
   auto mat = parse_material(node_config[2]["material"]);
 
-  !geom || !mat ||
-      (parsed_node = make_unique<plain_node>(std::move(geom), *mat));
+  if (geom && mat) {
+    geom->set_material(*mat);
+    parsed_node = make_unique<plain_node>(std::move(geom));
+  }
 
   if (parsed_node) {
     parsed_node->set_lcs(parse_lcs(node_config[0]["lcs"]));
@@ -231,7 +233,9 @@ std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_point_light(
   mat.spec = color{ 1, 1, 1, 1 };
   mat.pow = 0;
 
-  auto rep = make_unique<plain_node>(make_unique<sphere>(1), mat);
+  auto placeholder = make_unique<sphere>(1);
+  placeholder->set_material(mat);
+  auto rep = make_unique<plain_node>(std::move(placeholder));
   mat4 lcs;
   rep->set_lcs(glm::translate(lcs, pos));
   return { make_unique<point_light>(color(comps[0]), color(comps[1]),

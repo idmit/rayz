@@ -8,10 +8,7 @@
 
 #include "node.h"
 
-node::node() {}
 node::~node() {}
-
-node::node(const material &mat) : _material(mat) {}
 
 void node::add_child(std::unique_ptr<node> &&child) {
   _children.push_back(std::move(child));
@@ -34,5 +31,3 @@ void node::set_lcs(const mat4 &lcs) {
 
 mat4 node::get_lcs() const { return _lcs; }
 mat4 node::get_ilcs() const { return _ilcs; }
-
-material node::get_material() const { return _material; }

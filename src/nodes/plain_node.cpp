@@ -36,8 +36,8 @@ vec3 transform_point(const mat4 &t, vec3 v) {
 
 vec3 transform_vec(const mat4 &t, vec3 v) { return vec3(t * glm::dvec4(v, 0)); }
 
-plain_node::plain_node(std::unique_ptr<geometry> &&geom, const material &mat)
-    : node(mat), _geom(std::move(geom)) {}
+plain_node::plain_node(std::unique_ptr<geometry> &&geom)
+    : _geom(std::move(geom)) {}
 
 geometry::ray_path plain_node::intersect(ray parent_ray) const {
   mat4 to_parent_transform = _lcs;
@@ -72,3 +72,5 @@ color plain_node::get_color(const vec3 &point) const {
 vec3 plain_node::get_normal(const vec3 &point) const {
   return transform_vec(_tlcs, _geom->get_normal(transform_point(_ilcs, point)));
 }
+
+material plain_node::get_material() const { return _geom->get_material(); }

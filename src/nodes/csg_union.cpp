@@ -52,3 +52,5 @@ color csg_union::get_color(const vec3 &point) const {
 }
 
 vec3 csg_union::get_normal(const vec3 &point) const { return { 0, 0, 0 }; }
+
+material csg_union::get_material() const { return _lhs->get_material(); }

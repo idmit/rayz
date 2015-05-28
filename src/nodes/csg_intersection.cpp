@@ -55,3 +55,5 @@ color csg_intersection::get_color(const vec3 &point) const {
 vec3 csg_intersection::get_normal(const vec3 &point) const {
   return { 0, 0, 0 };
 }
+
+material csg_intersection::get_material() const { return _lhs->get_material(); }
