@@ -55,7 +55,7 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
       num_t distance = INFINITY;
       vec3 id_point;
 
-      if (i == 480 && j == 435) {
+      if (j == 590 && i == 350) {
         printf("");
       }
 
@@ -81,31 +81,63 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
       if (id) {
         for (auto &light : scene.lights()) {
 
-          vec3 norm = glm::normalize(id->get_normal(id_point));
-          material material = id->get_material();
+          ray shadow_ray;
+          shadow_ray.origin = id_point;
+          num_t vtol_dist = light->get_dist(id_point);
+          shadow_ray.dir = glm::normalize(light->get_dir(id_point));
 
-          vec3 vtoe = glm::normalize(_eye - id_point);
-          vec3 vtol = glm::normalize(light->get_dir(id_point));
+          bool in_shadow = false;
 
-          num_t d = glm::max(glm::dot(vtol, norm), 0.0);
-          num_t s = 0;
-          if (d > 0) {
-            s = glm::pow(
-                glm::max(glm::dot(norm, glm::normalize(vtoe + vtol)), 0.0),
-                material.pow);
+          for (auto &node : scene.nodes()) {
+
+            if (node == id || node == light->rep) {
+              continue;
+            }
+
+            vec3 closest_point;
+            auto intersected = node->intersect(shadow_ray);
+            if (!intersected.empty()) {
+              closest_point = shadow_ray.origin +
+                              shadow_ray.dir * intersected.front().first;
+              if (glm::distance(closest_point, id_point) < vtol_dist) {
+                in_shadow = true;
+                break;
+              }
+            }
           }
 
-          vec4 amb = material.amb.rgba * light->get_ambient().rgba;
-          vec4 diff = d * (material.diff.rgba * light->get_diffuse().rgba);
-          vec4 spec = s * (material.spec.rgba * light->get_specular().rgba);
+          material material = id->get_material();
+          if (in_shadow) {
+            color out{ material.amb.rgba * light->get_ambient().rgba };
 
-          num_t dis = light->get_dist(id_point);
-          num_t alpha = light->get_att().x + light->get_att().y * dis +
-                        light->get_att().z * dis * dis;
+            closest_points[i][j].rgba =
+                glm::clamp(closest_points[i][j].rgba + out.rgba, 0.0, 1.0);
+          } else {
+            vec3 norm = glm::normalize(id->get_normal(id_point));
 
-          color out{ (amb + diff + spec) / alpha };
-          closest_points[i][j].rgba =
-              glm::clamp(closest_points[i][j].rgba + out.rgba, 0.0, 1.0);
+            vec3 vtoe = glm::normalize(_eye - id_point);
+            vec3 vtol = glm::normalize(light->get_dir(id_point));
+
+            num_t d = glm::max(glm::dot(vtol, norm), 0.0);
+            num_t s = 0;
+            if (d > 0) {
+              s = glm::pow(
+                  glm::max(glm::dot(norm, glm::normalize(vtoe + vtol)), 0.0),
+                  material.pow);
+            }
+
+            vec4 amb = material.amb.rgba * light->get_ambient().rgba;
+            vec4 diff = d * (material.diff.rgba * light->get_diffuse().rgba);
+            vec4 spec = s * (material.spec.rgba * light->get_specular().rgba);
+
+            num_t dis = light->get_dist(id_point);
+            num_t alpha = light->get_att().x + light->get_att().y * dis +
+                          light->get_att().z * dis * dis;
+
+            color out{ amb + (diff + spec) / alpha };
+            closest_points[i][j].rgba =
+                glm::clamp(closest_points[i][j].rgba + out.rgba, 0.0, 1.0);
+          }
         }
       }
       x += pxw;
