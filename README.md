@@ -1,8 +1,10 @@
 # rayz
 Computer graphics study assignment
 
-## Example
+## Examples
 ![](https://raw.githubusercontent.com/ivandmitrievsky/rayz/master/examples/al.png)
+![](https://raw.githubusercontent.com/ivandmitrievsky/rayz/master/examples/simple/render.bmp)
+![](https://raw.githubusercontent.com/ivandmitrievsky/rayz/master/examples/complex/render.bmp)
 
 ## Building
 
