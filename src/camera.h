@@ -9,7 +9,6 @@
 #ifndef __rayz__camera__
 #define __rayz__camera__
 
-#include "bitmap_image.hpp"
 #include "scene.h"
 
 class scene;
@@ -20,7 +19,8 @@ public:
   camera(const vec3 &pos, num_t fov_x, num_t fov_y, num_t heading, num_t pitch,
          num_t roll);
 
-  bitmap_image render(const scene &scene, long resX, long resY);
+  std::vector<std::vector<color> > render(const scene &scene, long resX,
+                                          long resY);
 
 private:
   vec3 _eye;

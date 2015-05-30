@@ -38,8 +38,8 @@ camera::camera(const vec3 &pos, num_t fovx, num_t fovy, num_t heading,
   _lookat = _eye - _w * dist;
 }
 
-bitmap_image camera::render(const scene &scene, long resX, long resY) {
-  bitmap_image img(static_cast<unsigned>(resX), static_cast<unsigned>(resY));
+std::vector<std::vector<color> > camera::render(const scene &scene, long resX,
+                                                long resY) {
   std::vector<std::vector<color> > closest_points(
       resY, std::vector<color>(resX, color{}));
 
@@ -54,10 +54,6 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
       const node *id = nullptr;
       num_t distance = INFINITY;
       vec3 id_point;
-
-      if (j == 590 && i == 350) {
-        printf("");
-      }
 
       for (auto &node : scene.nodes()) {
         ray world_ray;
@@ -108,10 +104,9 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
 
           material material = id->get_material();
           if (in_shadow) {
-            color out{ material.amb.rgba * light->get_ambient().rgba };
-
             closest_points[i][j].rgba =
-                glm::clamp(closest_points[i][j].rgba + out.rgba, 0.0, 1.0);
+                closest_points[i][j].rgba +
+                material.amb.rgba * light->get_ambient().rgba;
           } else {
             vec3 norm = glm::normalize(id->get_normal(id_point));
 
@@ -134,9 +129,8 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
             num_t alpha = light->get_att().x + light->get_att().y * dis +
                           light->get_att().z * dis * dis;
 
-            color out{ amb + (diff + spec) / alpha };
             closest_points[i][j].rgba =
-                glm::clamp(closest_points[i][j].rgba + out.rgba, 0.0, 1.0);
+                closest_points[i][j].rgba + amb + (diff + spec) / alpha;
           }
         }
       }
@@ -146,12 +140,5 @@ bitmap_image camera::render(const scene &scene, long resX, long resY) {
     y += pxh;
   }
 
-  for (unsigned i = 0; i < resY; ++i) {
-    for (unsigned j = 0; j < resX; ++j) {
-      img.set_pixel(j, i, closest_points[i][j].r(), closest_points[i][j].g(),
-                    closest_points[i][j].b());
-    }
-  }
-
-  return img;
+  return closest_points;
 }

@@ -7,10 +7,8 @@
 //
 
 #include "opts.h"
-
 #include "scene.h"
-
-#include "geometries/obj.h"
+#include "postprocessor.h"
 
 int main(int argc, const char* argv[]) {
 
@@ -32,7 +30,7 @@ int main(int argc, const char* argv[]) {
     return 1;
   }
 
-  cam->render(s, resx, resy).save_image(output_img);
+  postprocessor::map_tone(cam->render(s, resx, resy)).save_image(output_img);
 
   return 0;
 }

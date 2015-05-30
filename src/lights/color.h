@@ -15,7 +15,7 @@ class color {
 public:
   explicit color(void) : rgba({ 0, 0, 0, 1 }) {}
 
-  explicit color(const vec4 &rgba) : rgba(glm::clamp(rgba, 0.0, 1.0)) {}
+  explicit color(const vec4 &rgba) : rgba(rgba) {}
 
   explicit color(num_t r, num_t g, num_t b, num_t a = 1)
       : rgba({ r, g, b, a }) {}
