@@ -227,11 +227,11 @@ std::pair<std::unique_ptr<light>, std::unique_ptr<node> > parse_point_light(
   att.z = light_config["attenuation"]["z"].as<num_t>();
 
   material mat;
-  mat.amb = color{ 1, 1, 1, 1 };
+  mat.amb = color{ 100, 100, 100, 100 };
   mat.diff = color{ 1, 1, 1, 1 };
   mat.emiss = color{ 1, 1, 1, 1 };
   mat.spec = color{ 1, 1, 1, 1 };
-  mat.pow = 0;
+  mat.pow = 0.1;
 
   auto placeholder = make_unique<sphere>(1);
   placeholder->set_material(mat);
